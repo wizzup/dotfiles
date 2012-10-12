@@ -1,22 +1,23 @@
-Config { font = "xft:terminus:pixelsize=12:antialias=true" 
+Config { font = "xft:Monospace:pixelsize=12" 
 	   , bgColor = "#000000"
 	   , fgColor = "#C9A34E"
 	   , border = NoBorder
 	   , borderColor = "#000000"
 	   , position = Top 
 	   , lowerOnStart = True
-	   , commands = [ Run Network "eth0" ["-L", "8", "-H", "32", "-l", "#C9A34E", "-n", "#429942" ,"-h", "#A36666", "-t", "<dev>: <rx> : <tx>"] 10
-                    , Run Network "wlan0" ["-L", "8", "-H", "32", "-l", "#C9A34E", "-n", "#429942" ,"-h", "#A36666", "-t", "<dev>: <rx> : <tx>"] 10
-					, Run Cpu ["-L","3","-H","50","--normal","#429942","--high","#A36666"] 10
-					, Run Memory ["-t","Mem: <usedratio>%"] 10
+	   , commands = [ Run Network "eth0" ["-t", "<dev> <rx>,<tx>", "-m", "3"] 10
+                    , Run Network "wlan0" ["-t", "<rx>,<tx>", "-m", "3"] 10
+                    , Run Wireless "wlan0" [] 10
+					, Run MultiCpu ["-t", "C:[<autototal>]%", "-m" , "2"] 10
+					, Run Memory ["-t","M:<usedratio>%", "-m", "2"] 10
+                    , Run BatteryP [] ["-t", "<acstatus><timeleft>hr", "--", "-o", "B:", "-O", "AC:", "-f", "ADP1/online"] 60
 					, Run Date "%a %b %_d %Y %H:%M:%S" "date" 10
 					, Run Com "uname" ["-o","-r"] "uname" 36000
 					, Run Com "nvidia-settings" ["-q gpucoretemp", "-t"] "gpucoretemp" 10
 					, Run Com "sensors" ["|grep temp1", "|awk 'NR==1{print $2}'"] "temp2" 10
-					, Run Com "amixer" ["sget Master", "| awk 'NR==6{print $5 $6}'"] "vol" 10
 					, Run StdinReader
 					]
 	   , sepChar = "%"
 	   , alignSep = "}{"
-	   , template = " %StdinReader% }{Vol: %vol% <fc=#429942>|</fc> GPU: %gpucoretemp%C <fc=#429942>|</fc> %cpu%  %temp2%<fc=#429942>|</fc> %memory% <fc=#429942>|</fc> %wlan0% %eth0% <fc=#429942>|</fc> %date% <fc=#429942>|</fc> %uname%"
+	   , template = " %StdinReader% }{%battery%|G:%gpucoretemp%c|%multicpu%%temp2%|%memory%|%wlan0wi%%wlan0%%eth0%|%date%|%uname%"
 	   }
