@@ -19,5 +19,5 @@ Config { font = "xft:Monospace:pixelsize=12"
 					]
 	   , sepChar = "%"
 	   , alignSep = "}{"
-	   , template = " %StdinReader% }{%battery%|G:%gpucoretemp%c|%multicpu%%temp2%|%memory%|%wlan0wi%%wlan0%%eth0%|%date%|%uname%"
+	   , template = " %StdinReader% }{%battery%|G:%gpucoretemp%c|%multicpu%%temp2%|%memory%|%wlan0wi% %wlan0%%eth0%|%date%|%uname%"
 	   }

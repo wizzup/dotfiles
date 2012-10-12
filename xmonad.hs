@@ -136,10 +136,25 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm              , xK_q     ), restart "xmonad" True)
     
     -- launch dvol volume up
-    , ((modm,               xK_Up     ), spawn "exe=`/home/wisut/dvol.sh -i 3` && eval \"exec $exe\"")
+    , ((modm,               xK_Up    ), spawn "exe=`/home/wisut/dvol.sh -i 3` && eval \"exec $exe\"")
     
-    -- launch dvol volume up
-    , ((modm,               xK_Down     ), spawn "exe=`/home/wisut/dvol.sh -d 3` && eval \"exec $exe\"")
+    -- launch dvol volume down
+    , ((modm,               xK_Down  ), spawn "exe=`/home/wisut/dvol.sh -d 3` && eval \"exec $exe\"")
+    
+    -- XF86AudioMute
+    , ((0, 0x1008ff12), spawn "exe=`/home/wisut/dvol.sh -t` && eval \"exec $exe\"")
+
+    -- XF86AudioRaiseVolume
+    , ((0, 0x1008ff13), spawn "exe=`/home/wisut/dvol.sh -i 5` && eval \"exec $exe\"")
+
+      -- XF86AudioLowerVolume
+    , ((0, 0x1008ff11), spawn "exe=`/home/wisut/dvol.sh -d 5` && eval \"exec $exe\"")
+
+    -- XF86MonBrightnessUp
+    , ((0, 0x1008ff02), spawn "exe=`/home/wisut/dbright.sh -i` && eval \"exec $exe\"")
+
+    -- XF86MonBrightnessDown
+    , ((0, 0x1008ff03), spawn "exe=`/home/wisut/dbright.sh -d` && eval \"exec $exe\"")
     ]
     ++
  

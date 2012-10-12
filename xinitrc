@@ -20,6 +20,10 @@ fi
 # set the cursoe as pointer, otherwise X will appear as cursor
 xsetroot -cursor_name left_ptr
 
+# setup syntaptics for trackpad
+synclient MaxTapTime=0
+synclient PalmDetect=1
+
 # keyboard layout switching
 setxkbmap -layout "us, th" -option "grp:lalt_lshift_toggle"
 
