@@ -36,7 +36,6 @@ usage() {
 #Actual brightness changing (readability low)
 ACTBRHT="$(cat $SYSPATH/actual_brightness)"
 MAXBRHT="$(cat $SYSPATH/max_brightness)"
-MAXBRHT="$(cat $SYSPATH/brightness)"
 
 #Argument Parsing
 case "$1" in
@@ -64,4 +63,3 @@ fi
 
 #Feed the pipe!
 (echo "Brightness $ACTBRHT/$MAXBRHT" ; echo $ACTBRHT | awk '{printf "%2d\n",($0/15)*100}' | dbar ; sleep "$SECS") > "$PIPE"
-# (echo "Brightness" ; echo $ACTBRHT | awk '{printf "%2d\n",($0/15)*100}' | dbar ; sleep "$SECS") > "$PIPE"
