@@ -8,9 +8,9 @@ Config { font = "xft:Monospace:pixelsize=12"
 	   , commands = [ Run Network "eth0" ["-t", "<dev> <rx>,<tx>", "-m", "3"] 10
                     , Run Network "wlan0" ["-t", "<rx>,<tx>", "-m", "3"] 10
                     , Run Wireless "wlan0" [] 10
-					, Run MultiCpu ["-t", "C:[<autototal>]%", "-m" , "2"] 10
-					, Run Memory ["-t","M:<usedratio>%", "-m", "2"] 10
-                    , Run BatteryP [] ["-t", "<acstatus><timeleft>hr", "--", "-o", "B:", "-O", "AC:", "-f", "ADP1/online"] 60
+					, Run MultiCpu ["-t", "C.[<autototal>]%", "-m" , "2"] 10
+					, Run Memory ["-t","M.<usedratio>%", "-m", "2"] 10
+                    , Run BatteryP ["BAT0"] ["-t", "<acstatus><timeleft>hr", "--", "-o", "B.", "-O", "AC.", "-f", "ADP1/online"] 60
 					, Run Date "%a %b %_d %Y %H:%M:%S" "date" 10
 					, Run Com "uname" ["-o","-r"] "uname" 36000
 					, Run Com "nvidia-settings" ["-q gpucoretemp", "-t"] "gpucoretemp" 10
@@ -19,5 +19,5 @@ Config { font = "xft:Monospace:pixelsize=12"
 					]
 	   , sepChar = "%"
 	   , alignSep = "}{"
-	   , template = " %StdinReader% }{%battery%|G:%gpucoretemp%c|%multicpu%%temp2%|%memory%|%wlan0wi% %wlan0%%eth0%|%date%|%uname%"
+	   , template = " %StdinReader% }{%battery%|G.%gpucoretemp%c|%multicpu%%temp2%|%memory%|%wlan0wi% %wlan0%%eth0%|%date%|%uname%"
 	   }
