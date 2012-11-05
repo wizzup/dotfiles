@@ -9,3 +9,5 @@
 	diff = true
 	status = true
 	interactive = true
+[push]
+	default = simple
