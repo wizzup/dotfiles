@@ -102,7 +102,7 @@ set encoding=utf-8  " Necessary to show unicode glyphs
 
 "" Filetype specific plugins
 
-" edittings for python-mode
+" Python using python-mode
 Bundle 'klen/python-mode'
 let ropevim_enable_shortcuts = 1
 let g:pymode_rope_goto_def_newwin = "vnew"
@@ -115,7 +115,7 @@ map <Leader>b Oimport ipdb; ipdb.set_trace() # BREAKPOINT<C-c>
 map <Leader>g :call RopeGotoDefinition()<CR>
 
 " reStructuredText
-autocmd FileType rst nnoremap <Leader>v :!gnome-open /tmp/%<.pdf<CR><C-l>
+autocmd FileType rst nnoremap <Leader>v :!xdg-open /tmp/%<.pdf<CR><C-l>
 autocmd FileType rst nnoremap <Leader>c :w<CR> :!rst2pdf % -o /tmp/%<.pdf<CR><C-l>
 
 " bash script
