@@ -31,11 +31,12 @@ setxkbmap -layout "us, th" -option "grp:lalt_lshift_toggle"
 xrdb -merge /home/wisut/.Xresources
 
 # start clipboard manager without icon
-#parcellite &
+parcellite &
 
 # let me go ahead with pre starting some of the apps
 dropboxd &
-chromium &
+#chromium
+#firefox &
 
 # time to start, the master - the window manager xmonad
 xmonad

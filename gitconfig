@@ -1,0 +1,11 @@
+[user]
+	name = wisut hantanong
+	email = wizzup@wizzup.com
+[core]
+	editor = vim
+[color]
+	ui = true
+	branch = true
+	diff = true
+	status = true
+	interactive = true

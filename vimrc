@@ -1,31 +1,29 @@
-" .vimrc by Wisut Hantanong 
- 
-" Automatic loading of .vimrc when editing in vim
-autocmd! bufwritepost .vimrc source %
+" .vimrc by Wisut Hantanong
 
-set nocompatible   " Disable vi-compatibility
+set nocompatible   " Disable vi-compatibility to get VIM full power
 
-" make commmand completiton like in shell
-set wildmode=list:longest 
+" Line number, window viewing and formatting
+set number                  " show line number
+set nowrap                  " no auto wrap text line
+set fo-=t                   " don't autowrap while typing
+set showmatch               " show matching brackets
+set wildmode=list:longest   " make commmand completiton work like in shell
+set scrolloff=4             " see more context around cursor
+set lazyredraw              " don't redraw while executing macros
+set visualbell              " turn the 'beep' sound off
+set showcmd                 " show visual-mode line selection count
+set foldenable              " enalbe folding
+set foldmethod=syntax       " fold by syntax
+set foldcolumn=1            " display fold indicator
 
-" see more context around cursor
-set scrolloff=4
-
-" Line number and formatting
-set number " show line number
-set nowrap " no auto wrap text
-set fo-=t " don't autowrap while typing
-set showcmd
-set showmatch
-
-" show matching brackets
-set showmatch
+"" color scheme
+set background=dark     " background color brightness
+colorscheme evening
+" colorscheme darkblue
+" colorscheme torte
 
 " keys mappings
-let mapleader=","
-
-" use jj instead of esc for insert mode exiting (experimental)
-" inoremap jj <ESC>
+let mapleader=","   " comma is easier to get than back-slash
 
 " easy quit window
 nnoremap <Leader>q :q<cr>
@@ -36,7 +34,7 @@ map <C-j> <C-w>j
 map <C-k> <C-w>k
 map <C-l> <C-l><C-w>l
 
-" visual mode shift improvement
+" visual mode shift without loosing selection
 vmap < <gv
 vmap > >gv
 
@@ -47,24 +45,23 @@ filetype indent on
 syntax on
 
 " Tabs and r/l shift
-set tabstop=4
-set softtabstop=4
-set shiftwidth=4
-set smarttab
-set shiftround
-set expandtab 
-set autoindent
-set smartindent
-set foldenable
+set tabstop=4       " mostly of my work I use 4 space indentation
+set softtabstop=4   " count 4 spaces as a tab
+set expandtab       " replace tab with spaces in normal mode
+set shiftwidth=2    " shift 2 spaces each time (when reindent/autoindent)
 
+set smarttab        " work fluently with spaces as tab
+set shiftround      " round indent to multiple of shiftwidth
+set autoindent      " auto indent on next line insertion
+set smartindent     " adj indent dept to where it should be
 
 " Searching
-set hlsearch " highlight current search keyword
-set incsearch " use incremental search
-set ignorecase
-set smartcase
+set hlsearch        " highlight current search keyword
+set incsearch       " use incremental search
+set ignorecase      " case insensitive search
+set smartcase       " use smartcase
 
-" I don't want to clean backup file
+" I don't want to clean backup file so don't create it.
 set nobackup
 set nowritebackup
 set noswapfile
@@ -72,102 +69,51 @@ set noswapfile
 " plugins management is done via vundle
 set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
-
-" let Vundle manage Vundle
-" required! 
 Bundle 'gmarik/vundle'
 
-" color scheme
-" Bundle 'jelera/vim-gummybears-colorscheme.git'
-" colorscheme darkblue
-" colorscheme torte
-" colorscheme gummybears
-colorscheme evening
-
-" My Bundles here:
-" original repos on github
+"" My Bundles : syntax as follows
+"" original repos on github
 " Bundle 'Lokaltog/vim-easymotion'
-Bundle 'tpope/vim-fugitive'
-" Bundle 'tpope/vim-surround.git'
-" Bundle 'msanders/snipmate.vim.git'
+" Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}
+"" vim-scripts repos
+" Bundle 'FuzzyFinder'
+"" non github repos
+" Bundle 'git://git.wincent.com/command-t.git'
+
+"" General plugins
+
+"" code commenting
 Bundle 'tomtom/tcomment_vim.git'
-"Bundle 'Rykka/riv.vim'
-"Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}
-"Bundle 'tpope/vim-rails.git'
-" vim-scripts repos
-"Bundle 'L9'
-"Bundle 'FuzzyFinder'
-" non github repos
-"Bundle 'git://git.wincent.com/command-t.git'
-" ...
 
-" neocomplcache
-" Bundle 'Shougo/neocomplcache.git'
+"" git plugins
+Bundle 'tpope/vim-fugitive'
 
-" cmake
-" Bundle 'jansenm/vim-cmake.git'
-
-" markdown
-" Bundle 'hallison/vim-markdown.git'
-
-" vimrepress for bloging
-"
+" vimrepress for bloging with wordpress
 Bundle 'vim-scripts/VimRepress.git'
 
 " NerdTree
 Bundle 'scrooloose/nerdtree.git'
 noremap <Leader>nt :NERDTree<cr>
 
-" Gundo
-" Bundle 'sjl/gundo.vim.git'
-" nnoremap <Leader>u :GundoToggle<cr>
-" let g:gundo_width = 60
-" let g:gundo_preview_height = 40
-" let g:gundo_right = 1
-
 " vim-powerline
-set t_Co=256
-Bundle 'Lokaltog/vim-powerline.git' 
-" Always show the statusline
-set laststatus=2
-" Necessary to show unicode glyphs
-set encoding=utf-8
-" Explicitly tell vim that the terminal supports 256 colors
+Bundle 'Lokaltog/vim-powerline.git'
+set laststatus=2    " Always show the statusline
+set encoding=utf-8  " Necessary to show unicode glyphs
 
-" Python folding
-" mkdir -p ~/.vim/ftplugin
-" wget -O ~/.vim/ftplugin/python_editing.vim http://www.vim.org/scripts/download_script.php?src_id=5492
-"set nofoldenable
+"" Filetype specific plugins
 
 " edittings for python-mode
-" Bundle 'klen/python-mode'
-" cd ~/.vim/bundle
-" git clone https://github.com/klen/python-mode
-"let ropevim_enable_shortcuts = 1
-"let g:pymode_rope_goto_def_newwin = "vnew"
-"let g:pymode_rope_extended_complete = 1
-"let g:pymode_breakpoint = 0
-"let g:pymode_syntax = 1
-"let g:pymode_syntax_builtin_objs = 0
-"let g:pymode_syntax_builtin_funcs = 0
-"map <Leader>b Oimport ipdb; ipdb.set_trace() # BREAKPOINT<C-c>
-"map <Leader>g :call RopeGotoDefinition()<CR>
+Bundle 'klen/python-mode'
+let ropevim_enable_shortcuts = 1
+let g:pymode_rope_goto_def_newwin = "vnew"
+let g:pymode_rope_extended_complete = 1
+let g:pymode_breakpoint = 0
+let g:pymode_syntax = 1
+let g:pymode_syntax_builtin_objs = 0
+let g:pymode_syntax_builtin_funcs = 0
+map <Leader>b Oimport ipdb; ipdb.set_trace() # BREAKPOINT<C-c>
+map <Leader>g :call RopeGotoDefinition()<CR>
 
-" Better navigating through omnicomplete option list
-" See http://stackoverflow.com/questions/2170023/how-to-map-keys-for-popup-menu-in-vim
-" set completeopt=longest,menuone
-" function! OmniPopup(action)
-"     if pumvisible()
-"         if a:action == 'j'
-"             return "\<C-N>"
-"         elseif a:action == 'k'
-"             return "\<C-P>"
-"         endif
-"     endif
-"     return a:action
-" endfunction
-
-" Compile and View for each filetype
 " reStructuredText
 autocmd FileType rst nnoremap <Leader>v :!gnome-open /tmp/%<.pdf<CR><C-l>
 autocmd FileType rst nnoremap <Leader>c :w<CR> :!rst2pdf % -o /tmp/%<.pdf<CR><C-l>
@@ -176,9 +122,14 @@ autocmd FileType rst nnoremap <Leader>c :w<CR> :!rst2pdf % -o /tmp/%<.pdf<CR><C-
 autocmd FileType sh nnoremap <Leader>r :w<CR> :source %<CR><C-l>
 
 " haskel source
+" Bundle 'Twinside/vim-haskellConceal.git'
+" Bundle 'Twinside/vim-haskellFold.git'
 autocmd FileType haskell nnoremap <Leader>r :w<CR> :!runhaskell % && echo && read -p "<bash>Enter to exit"<CR><C-l>
 
-" custom completion by <leader>tap (code taken form 'Hacking vim' book)
+"" Misc and custom functions
+
+" custom completion by Tap (code taken form 'Hacking vim' book)
+set completeopt=longest,menuone
 function! SuperCleverTab()
     "check if at beginning of line or after a space
     if strpart( getline('.'), 0, col('.')-1 ) =~ '^\s*$'
@@ -186,17 +137,17 @@ function! SuperCleverTab()
     else
         " do we have omni completion available
         if &omnifunc != ''
-            “use omni-completion 1. priority
+            " use omni-completion first
             return "\<C-X>\<C-O>"
         elseif &dictionary != ''
             " no omni completion, try dictionary completio
             return “\<C-K>”
         else
-            "use omni completion or dictionary completion
-            "use known-word completion
+            " no omni completion nor dictionary completion
+            " use known-word completiton
             return "\<C-N>"
         endif
     endif
 endfunction
-" bind SuperCleverTab function to the tab key
+" bind SuperCleverTab function to the <leader>tab key
 inoremap <Leader><Tab> <C-R>=SuperCleverTab()<cr>
