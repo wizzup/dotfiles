@@ -5,7 +5,7 @@ Config { font = "xft:Monospace:pixelsize=12"
 	   , fgColor = "#C9A34E"
 	   , border = NoBorder
 	   , borderColor = "#000000"
-	   , position = Top 
+	   , position = TopW R 98
 	   , lowerOnStart = True
 	   , commands = [ Run Network "eth0" ["-t", "<dev> <rx>,<tx>", "-m", "3"] 10
 					, Run MultiCpu ["-t", "C.[<autototal>]%", "-m" , "2"] 10

@@ -1,13 +1,19 @@
 [user]
-	name = wisut hantanong
-	email = wizzup@wizzup.com
+  name  = wisut hantanong
+  email = wizzup@wizzup.com
+
 [core]
-	editor = vim
+  editor = vim
+
 [color]
-	ui = true
-	branch = true
-	diff = true
-	status = true
-	interactive = true
+  ui          = true
+  branch      = true
+  diff        = true
+  status      = true
+  interactive = true
+
 [push]
-	default = simple
+  default = simple
+
+[github]
+  user  = wizzup
