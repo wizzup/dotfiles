@@ -19,6 +19,5 @@ alias ar2c3='aria2c -x3 -c'
 alias artodo='echo "aria2c -x3 -c $@" >> ARTODO'
 
 export TZ='Asia/Bangkok'
-#export PAGER='/usr/share/vim/vim73/macros/less.sh'
 
 PS1='[\u@\h \W]\$ '

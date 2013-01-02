@@ -25,7 +25,8 @@ set pastetoggle=<F12>
 let mapleader=","   " comma is easier to get than back-slash
 
 " folding
-nmap <Space> za " fold toggle using space
+" fold toggle using space
+nmap <Space> za
 
 " moving around multiple windows more easyly
 nmap <C-h> <C-w>h
@@ -80,6 +81,9 @@ Bundle 'gmarik/vundle'
 " Bundle 'git://git.wincent.com/command-t.git'
 
 "" General plugins
+
+"" Snippets
+Bundle "SirVer/ultisnips.git"
 
 "" code commenting
 Bundle 'tomtom/tcomment_vim.git'
