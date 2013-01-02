@@ -6,15 +6,23 @@
 --
 -- Normally, you'd only override those defaults you care about.
 --
- 
+-- import System.IO
+-- import System.Exit
 import XMonad
 import XMonad.Hooks.DynamicLog
--- import XMonad.Hooks.DynamicHooks
-
-import System.Exit
- 
+import XMonad.Hooks.ManageDocks
+import XMonad.Layout.Fullscreen
+import XMonad.Layout.NoBorders
+import XMonad.Layout.Spiral
+import XMonad.Layout.Tabbed
 import qualified XMonad.StackSet as W
 import qualified Data.Map        as M
+-- import XMonad.Hooks.ManageHelpers
+-- import XMonad.Hooks.SetWMName
+import XMonad.Util.Run(spawnPipe)
+-- import XMonad.Util.EZConfig(additionalKeys)
+
+import System.Exit
  
 -- The preferred terminal program, which is used in a binding below and by
 -- certain contrib modules.
@@ -136,25 +144,25 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm              , xK_q     ), restart "xmonad" True)
     
     -- launch dvol volume up
-    , ((modm,               xK_Up    ), spawn "exe=`/home/wisut/dvol.sh -i 3` && eval \"exec $exe\"")
+    , ((modm,               xK_Up    ), spawn "exe=`/home/wisut/.dvol.sh -i 3` && eval \"exec $exe\"")
     
     -- launch dvol volume down
-    , ((modm,               xK_Down  ), spawn "exe=`/home/wisut/dvol.sh -d 3` && eval \"exec $exe\"")
+    , ((modm,               xK_Down  ), spawn "exe=`/home/wisut/.dvol.sh -d 3` && eval \"exec $exe\"")
     
     -- XF86AudioMute
-    , ((0, 0x1008ff12), spawn "exe=`/home/wisut/dvol.sh -t` && eval \"exec $exe\"")
+    , ((0, 0x1008ff12), spawn "exe=`/home/wisut/.dvol.sh -t` && eval \"exec $exe\"")
 
     -- XF86AudioRaiseVolume
-    , ((0, 0x1008ff13), spawn "exe=`/home/wisut/dvol.sh -i 5` && eval \"exec $exe\"")
+    , ((0, 0x1008ff13), spawn "exe=`/home/wisut/.dvol.sh -i 5` && eval \"exec $exe\"")
 
       -- XF86AudioLowerVolume
-    , ((0, 0x1008ff11), spawn "exe=`/home/wisut/dvol.sh -d 5` && eval \"exec $exe\"")
+    , ((0, 0x1008ff11), spawn "exe=`/home/wisut/.dvol.sh -d 5` && eval \"exec $exe\"")
 
     -- XF86MonBrightnessUp
-    , ((0, 0x1008ff02), spawn "exe=`/home/wisut/dbright.sh -i` && eval \"exec $exe\"")
+    , ((0, 0x1008ff02), spawn "exe=`/home/wisut/.dbright.sh -i` && eval \"exec $exe\"")
 
     -- XF86MonBrightnessDown
-    , ((0, 0x1008ff03), spawn "exe=`/home/wisut/dbright.sh -d` && eval \"exec $exe\"")
+    , ((0, 0x1008ff03), spawn "exe=`/home/wisut/.dbright.sh -d` && eval \"exec $exe\"")
     ]
     ++
  
@@ -205,20 +213,43 @@ myMouseBindings (XConfig {XMonad.modMask = modMask}) = M.fromList $
 -- which denotes layout choice.
 --
 -- myLayout = tiled ||| Mirror tiled ||| Full
-myLayout = tiled ||| Full
-  where
-     -- default tiling algorithm partitions the screen into two panes
-     tiled   = Tall nmaster delta ratio
- 
-     -- The default number of windows in the master pane
-     nmaster = 1
- 
-     -- Default proportion of screen occupied by master pane
-     ratio   = 2/3
- 
-     -- Percent of screen to increment by when resizing panes
-     delta   = 3/100
- 
+-- myLayout = tiled ||| Full
+--   where
+--      -- default tiling algorithm partitions the screen into two panes
+--      tiled   = Tall nmaster delta ratio
+--  
+--      -- The default number of windows in the master pane
+--      nmaster = 1
+--  
+--      -- Default proportion of screen occupied by master pane
+--      ratio   = 2/3
+--  
+--      -- Percent of screen to increment by when resizing panes
+--      delta   = 3/100
+
+-- myLayout = avoidStruts (
+--             Tall 1 (3/100) (1/2) |||
+--             Mirror (Tall 1 (3/100) (1/2)) |||
+--             tabbed shrinkText tabConfig |||
+--             Full |||
+--             spiral (6/7)) |||
+--             noBorders (fullscreenFull Full)
+
+myLayout = avoidStruts (
+            Tall 1 (3/100) (1/2) |||
+            tabbed shrinkText tabConfig |||
+            Full )
+
+-- Colors for text and backgrounds of each tab when in "Tabbed" layout.
+tabConfig = defaultTheme {
+    activeBorderColor = "#7C7C7C",
+    activeTextColor = "#CEFFAC",
+    activeColor = "#000000",
+    inactiveBorderColor = "#7C7C7C",
+    inactiveTextColor = "#EEEEEE",
+    inactiveColor = "#000000"
+    }
+
 ------------------------------------------------------------------------
 -- Window rules:
  
@@ -273,8 +304,21 @@ myStartupHook = return ()
  
 -- Run xmonad with the settings you specify. No need to modify this.
 --
-main = xmonad =<< xmobar defaults
- 
+-- main = xmonad =<< xmobar defaults
+
+-- The main function.
+main = xmonad =<< statusBar myBar myPP toggleStrutsKey defaults
+
+-- Command to launch the bar.
+myBar = "xmobar"
+
+-- Custom PP, configure it as you like. It determines what is being written to the bar.
+-- myPP = dzenPP 
+myPP = xmobarPP
+
+-- Key binding to toggle the gap for the bar.
+toggleStrutsKey XConfig {XMonad.modMask = modMask} = (modMask, xK_b)
+
 -- A structure containing your configuration settings, overriding
 -- fields in the default config. Any you don't override, will 
 -- use the defaults defined in xmonad/XMonad/Config.hs

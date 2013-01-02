@@ -1,15 +1,18 @@
-Xft.dpi: 96
-Xft.lcdfilter: lcddefault
-Xft.antialias: true
-Xft.hinting:true
-Xft.hintstyle: hintfull
-Xft.rgba: rgb
-*customization: -color
+! Xft settings ---------------------------------------------------------------
+Xft.dpi:        96
+Xft.antialias:  true
+Xft.rgba:       rgb
+Xft.hinting:    true
+Xft.hintstyle:  hintslight
 
-! to match gnome-terminal "Linux console" scheme
+! Xcursor --------------------------------------------------------------------
+Xcursor.theme: Vanilla-DMZ-AA
+Xcursor.size:  22
+
+! urxvt settings to match gnome-terminal "Linux console" scheme
 ! foreground/background
-!URxvt*background: #000000
-!URxvt*foreground: #ffffff
+! URxvt*background: #000000
+URxvt*foreground: #ffffff
 ! black
 URxvt.color0  : #000000
 URxvt.color8  : #555555
@@ -34,6 +37,14 @@ URxvt.color14 : #55FFFF
 ! white
 URxvt.color7  : #AAAAAA
 URxvt.color15 : #FFFFFF
-
-URxvt*font: xft:Monospace:pixelsize=12
-URxvt*boldFont: xft:Monospace:pixelsize=12
+! font
+URxvt*font: xft:DejaVu Sans Mono:pixelsize=12
+URxvt*boldFont: xft:DejaVu Sans Mono:pixelsize=12
+! scrollbar
+URxvt.scrollBar: False
+! transparency (composite)
+URxvt*depth: 32
+URxvt*background: rgba:0000/0000/0000/dddd
+! transparency (fake)
+! urxvt*transparent: true
+! urxvt*shading: 30

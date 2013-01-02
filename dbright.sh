@@ -1,6 +1,10 @@
 #!/bin/bash
 
-## apple_backlight
+## apple_backlight via nvidia driver
+## run nvidia-xsetting to get xorg.conf and add following line to Device section
+##
+## Option         "RegistryDwords" "EnableBrightnessControl=1"
+##
 # /sys/class/backlight/apple_backlight/brightness
 # /sys/class/backlight/apple_backlight/max_brightness
 # /sys/class/backlight/apple_backlight/actual_brightness
