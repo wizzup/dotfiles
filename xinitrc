@@ -14,6 +14,9 @@ fi
 # system tray
 trayer --edge top --align left --SetDockType true --SetPartialStrut true --expand true --widthtype request --transparent true --alpha 255 --height 12&
 
+# pluse audio system tray
+pasystray &
+
 # dbus notifiacaion
 dunst -config .dunstrc &
 
@@ -21,10 +24,10 @@ dunst -config .dunstrc &
 # xscreensaver -no-splash &
 
 # composite manager
-xcompmgr -c &
+# xcompmgr -c &
 
 # desktop wallpaper
-feh --bg-tile /usr/share/slim/themes/default/background.jpg &
+# feh --bg-tile /usr/share/slim/themes/default/background.jpg &
 
 # set the cursoe as pointer, otherwise X will appear as cursor
 # xsetroot -cursor_name left_ptr &
@@ -37,11 +40,12 @@ setxkbmap -layout "us, th" -option "grp:lalt_lshift_toggle" &
 [[ -f ~/.Xresources ]] && xrdb -merge ~/.Xresources
 
 # start clipboard manager without icon
-parcellite &
+# parcellite &
 
 # let me go ahead with pre starting some of the apps
+chromium &
+urxvt &
 dropboxd &
-# chromium &
 # firefox &
 
 # time to start, the master - the window manager xmonad

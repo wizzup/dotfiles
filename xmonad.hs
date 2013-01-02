@@ -6,8 +6,6 @@
 --
 -- Normally, you'd only override those defaults you care about.
 --
--- import System.IO
--- import System.Exit
 import XMonad
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
@@ -19,13 +17,13 @@ import qualified XMonad.StackSet as W
 import qualified Data.Map        as M
 -- import XMonad.Hooks.ManageHelpers
 -- import XMonad.Hooks.SetWMName
-import XMonad.Util.Run(spawnPipe)
+-- import XMonad.Util.Run(spawnPipe)
 -- import XMonad.Util.EZConfig(additionalKeys)
 
+-- import System.IO
 import System.Exit
  
--- The preferred terminal program, which is used in a binding below and by
--- certain contrib modules.
+-- The preferred terminal program.
 --
 -- myTerminal      = "xterm"
 myTerminal      = "urxvt"
@@ -34,10 +32,7 @@ myTerminal      = "urxvt"
 --
 myBorderWidth   = 1
  
--- modMask lets you specify which modkey you want to use. The default
--- is mod1Mask ("left alt").  You may also consider using mod3Mask
--- ("right alt"), which does not conflict with emacs keybindings. The
--- "windows key" is usually mod4Mask.
+-- "windows key" mod4Mask as a mod-key.
 --
 myModMask       = mod4Mask
  
@@ -57,11 +52,6 @@ myModMask       = mod4Mask
 myNumlockMask   = mod2Mask
  
 -- The default number of workspaces (virtual screens) and their names.
--- By default we use numeric strings, but any string may be used as a
--- workspace name. The number of workspaces is determined by the length
--- of this list.
---
--- A tagging example:
 --
 -- > workspaces = ["web", "irc", "code" ] ++ map show [4..9]
 --
@@ -135,7 +125,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm              , xK_period), sendMessage (IncMasterN (-1)))
  
     -- toggle the status bar gap (used with avoidStruts from Hooks.ManageDocks)
-    -- , ((modm , xK_b ), sendMessage ToggleStruts)
+    , ((modm , xK_b ), sendMessage ToggleStruts)
  
     -- Quit xmonad
     , ((modm .|. shiftMask, xK_q     ), io (exitWith ExitSuccess))
@@ -150,23 +140,22 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm,               xK_Down  ), spawn "exe=`/home/wisut/.dvol.sh -d 3` && eval \"exec $exe\"")
     
     -- XF86AudioMute
-    , ((0, 0x1008ff12), spawn "exe=`/home/wisut/.dvol.sh -t` && eval \"exec $exe\"")
+    -- , ((0, 0x1008ff12), spawn "exe=`/home/wisut/.dvol.sh -t` && eval \"exec $exe\"")
 
     -- XF86AudioRaiseVolume
-    , ((0, 0x1008ff13), spawn "exe=`/home/wisut/.dvol.sh -i 5` && eval \"exec $exe\"")
+    -- , ((0, 0x1008ff13), spawn "exe=`/home/wisut/.dvol.sh -i 5` && eval \"exec $exe\"")
 
       -- XF86AudioLowerVolume
-    , ((0, 0x1008ff11), spawn "exe=`/home/wisut/.dvol.sh -d 5` && eval \"exec $exe\"")
+    -- , ((0, 0x1008ff11), spawn "exe=`/home/wisut/.dvol.sh -d 5` && eval \"exec $exe\"")
 
     -- XF86MonBrightnessUp
-    , ((0, 0x1008ff02), spawn "exe=`/home/wisut/.dbright.sh -i` && eval \"exec $exe\"")
+    -- , ((0, 0x1008ff02), spawn "exe=`/home/wisut/.dbright.sh -i` && eval \"exec $exe\"")
 
     -- XF86MonBrightnessDown
-    , ((0, 0x1008ff03), spawn "exe=`/home/wisut/.dbright.sh -d` && eval \"exec $exe\"")
+    -- , ((0, 0x1008ff03), spawn "exe=`/home/wisut/.dbright.sh -d` && eval \"exec $exe\"")
     ]
     ++
  
-    --
     -- mod-[1..9], Switch to workspace N
     -- mod-shift-[1..9], Move client to workspace N
     --
@@ -204,11 +193,6 @@ myMouseBindings (XConfig {XMonad.modMask = modMask}) = M.fromList $
 ------------------------------------------------------------------------
 -- Layouts:
  
--- You can specify and transform your layouts by modifying these values.
--- If you change layout bindings be sure to use 'mod-shift-space' after
--- restarting (with 'mod-q') to reset your layout state to the new
--- defaults, as xmonad preserves your old layout settings by default.
---
 -- The available layouts.  Note that each layout is separated by |||,
 -- which denotes layout choice.
 --
@@ -265,12 +249,12 @@ tabConfig = defaultTheme {
 -- To match on the WM_NAME, you can use 'title' in the same way that
 -- 'className' and 'resource' are used below.
 --
-myManageHook = composeAll
-    [ className =? "MPlayer"        --> doFloat
-    , className =? "Gimp"           --> doFloat
-    , resource  =? "desktop_window" --> doIgnore
-    , resource  =? "kdesktop"       --> doIgnore ]
- 
+-- myManageHook = composeAll
+--     [ className =? "MPlayer"        --> doFloat
+--     , className =? "Gimp"           --> doFloat
+--     , resource  =? "desktop_window" --> doIgnore
+--     , resource  =? "kdesktop"       --> doIgnore ]
+--  
 -- Whether focus follows the mouse pointer.
 myFocusFollowsMouse :: Bool
 myFocusFollowsMouse = True
@@ -278,35 +262,18 @@ myFocusFollowsMouse = True
  
 ------------------------------------------------------------------------
 -- Status bars and logging
- 
--- Perform an arbitrary action on each internal state change or X event.
--- See the 'DynamicLog' extension for examples.
---
--- To emulate dwm's status bar
---
--- > logHook = dynamicLogDzen
 --
 -- myLogHook = return ()
 myLogHook = dynamicLog
  
 ------------------------------------------------------------------------
 -- Startup hook
- 
--- Perform an arbitrary action each time xmonad starts or is restarted
--- with mod-q.  Used by, e.g., XMonad.Layout.PerWorkspace to initialize
--- per-workspace layout choices.
---
--- By default, do nothing.
-myStartupHook = return ()
+-- myStartupHook = return ()
  
 ------------------------------------------------------------------------
--- Now run xmonad with all the defaults we set up.
- 
--- Run xmonad with the settings you specify. No need to modify this.
---
--- main = xmonad =<< xmobar defaults
-
 -- The main function.
+-- main = xmonad =<< xmobar defaults
+--
 main = xmonad =<< statusBar myBar myPP toggleStrutsKey defaults
 
 -- Command to launch the bar.
@@ -317,7 +284,7 @@ myBar = "xmobar"
 myPP = xmobarPP
 
 -- Key binding to toggle the gap for the bar.
-toggleStrutsKey XConfig {XMonad.modMask = modMask} = (modMask, xK_b)
+toggleStrutsKey XConfig {XMonad.modMask = mod4Mask} = (mod4Mask, xK_b)
 
 -- A structure containing your configuration settings, overriding
 -- fields in the default config. Any you don't override, will 
@@ -327,11 +294,11 @@ toggleStrutsKey XConfig {XMonad.modMask = modMask} = (modMask, xK_b)
 --
 defaults = defaultConfig {
       -- simple stuff
+       -- numlockMask        = myNumlockMask,
         terminal           = myTerminal,
         focusFollowsMouse  = myFocusFollowsMouse,
         borderWidth        = myBorderWidth,
         modMask            = myModMask,
---        numlockMask        = myNumlockMask,
         workspaces         = myWorkspaces,
         normalBorderColor  = myNormalBorderColor,
         focusedBorderColor = myFocusedBorderColor,
@@ -341,8 +308,8 @@ defaults = defaultConfig {
         mouseBindings      = myMouseBindings,
  
       -- hooks, layouts
+        -- manageHook         = myManageHook,
+        -- startupHook        = myStartupHook,
         layoutHook         = myLayout,
-        manageHook         = myManageHook,
-        logHook            = myLogHook,
-        startupHook        = myStartupHook
+        logHook            = myLogHook
     }
