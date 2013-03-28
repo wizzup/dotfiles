@@ -149,10 +149,10 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- , ((0, 0x1008ff11), spawn "exe=`/home/wisut/works/dotfiles/vol.sh -d 3` && eval \"exec $exe\"")
 
     -- XF86MonBrightnessUp
-    , ((0, 0x1008ff02), spawn "exe=`/home/wisut/works/dotfiles/dbright.sh -i` && eval \"exec $exe\"")
+    -- , ((0, 0x1008ff02), spawn "exe=`/home/wisut/works/dotfiles/dbright.sh -i` && eval \"exec $exe\"")
 
     -- XF86MonBrightnessDown
-    , ((0, 0x1008ff03), spawn "exe=`/home/wisut/works/dotfiles/dbright.sh -d` && eval \"exec $exe\"")
+    -- , ((0, 0x1008ff03), spawn "exe=`/home/wisut/works/dotfiles/dbright.sh -d` && eval \"exec $exe\"")
     ]
     ++
 
