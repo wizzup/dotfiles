@@ -1,0 +1,49 @@
+##
+## .xprofile : LigthDM using this instead of .xinitrc
+##
+
+## dual monitor using xrandr
+#source .dualscreen_layout.sh
+
+## grab customized resource (console color and fonts)
+#[[ -f ~/.Xmodmap ]] && xmodmap ~/.Xmodmap
+[[ -f ~/.Xresources ]] && xrdb -merge ~/.Xresources
+
+## keyboard layout switching
+setxkbmap -layout "us, th" -option "grp:lalt_lshift_toggle" &
+
+## system tray
+trayer --edge top --align right --SetDockType true --SetPartialStrut true --expand true --widthtype request --transparent true --alpha 255 --height 12 > .trayer.log &
+
+## numlock on
+numlockx &
+
+# pluse audio system tray
+#pasystray > .pasystray.log &
+
+## dbus notifiacaion
+#dunst -config .dunstrc > .dunst.log &
+
+## screensaver
+#xscreensaver -no-splash &
+
+## composite manager
+#xcompmgr -c &
+
+## desktop wallpaper
+#feh --bg-tile .wallpaper.jpg &
+
+## set the cursoe as pointer, otherwise X will appear as cursor
+xsetroot -cursor_name left_ptr -gray &
+
+## start clipboard manager without icon
+#parcellite &
+
+## let me go ahead with pre starting some of the apps
+#urxvt &
+#transmission-gtk -m &
+#chromium &
+#firefox &
+
+## dropbox
+#dropboxd &

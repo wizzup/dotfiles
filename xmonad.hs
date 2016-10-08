@@ -9,6 +9,7 @@
 import XMonad
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
+import XMonad.Hooks.EwmhDesktops
 import XMonad.Layout.Fullscreen
 import XMonad.Layout.NoBorders
 import XMonad.Layout.Spiral
@@ -71,7 +72,8 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     [ ((modm .|. shiftMask, xK_Return), spawn $ XMonad.terminal conf)
  
     -- launch dmenu
-    , ((modm,               xK_p     ), spawn "exe=`dmenu_run` && eval \"exec $exe\"")
+    --, ((modm,               xK_p     ), spawn "exe=`dmenu_run` && eval \"exec $exe\"")
+    , ((modm,               xK_p     ), spawn "dmenu_run")
  
     -- launch gmrun
     , ((modm .|. shiftMask, xK_p     ), spawn "gmrun")
@@ -132,30 +134,15 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
  
     -- Restart xmonad
     , ((modm              , xK_q     ), restart "xmonad" True)
-    
+
     -- launch dvol volume up
-    , ((modm,               xK_Up    ), spawn "exe=`/home/wisut/.dvol.sh -i 3` && eval \"exec $exe\"")
-    
+    , ((modm,               xK_Up    ), spawn "exe=`~/.dvol.sh -i 3` && eval \"exec $exe\"")
+
     -- launch dvol volume down
-    , ((modm,               xK_Down  ), spawn "exe=`/home/wisut/.dvol.sh -d 3` && eval \"exec $exe\"")
-    
-    -- XF86AudioMute
-    -- , ((0, 0x1008ff12), spawn "exe=`/home/wisut/.dvol.sh -t` && eval \"exec $exe\"")
-
-    -- XF86AudioRaiseVolume
-    -- , ((0, 0x1008ff13), spawn "exe=`/home/wisut/.dvol.sh -i 5` && eval \"exec $exe\"")
-
-      -- XF86AudioLowerVolume
-    -- , ((0, 0x1008ff11), spawn "exe=`/home/wisut/.dvol.sh -d 5` && eval \"exec $exe\"")
-
-    -- XF86MonBrightnessUp
-    -- , ((0, 0x1008ff02), spawn "exe=`/home/wisut/.dbright.sh -i` && eval \"exec $exe\"")
-
-    -- XF86MonBrightnessDown
-    -- , ((0, 0x1008ff03), spawn "exe=`/home/wisut/.dbright.sh -d` && eval \"exec $exe\"")
+    , ((modm,               xK_Down  ), spawn "exe=`~/.dvol.sh -d 3` && eval \"exec $exe\"")
     ]
     ++
- 
+
     -- mod-[1..9], Switch to workspace N
     -- mod-shift-[1..9], Move client to workspace N
     --
@@ -220,8 +207,8 @@ myMouseBindings (XConfig {XMonad.modMask = modMask}) = M.fromList $
 --             noBorders (fullscreenFull Full)
 
 myLayout = avoidStruts (
-            Tall 1 (3/100) (1/2) |||
             tabbed shrinkText tabConfig |||
+            Tall 1 (3/100) (1/2) |||
             Full )
 
 -- Colors for text and backgrounds of each tab when in "Tabbed" layout.

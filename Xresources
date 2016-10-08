@@ -11,7 +11,7 @@ Xcursor.size:  22
 
 ! urxvt settings to match gnome-terminal "Linux console" scheme
 ! foreground/background
-! URxvt*background: #000000
+URxvt*background: #000000
 URxvt*foreground: #ffffff
 ! black
 URxvt.color0  : #000000
