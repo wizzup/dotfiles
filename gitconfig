@@ -1,9 +1,9 @@
 [user]
   name  = wisut hantanong
-  email = wizzup@wizzup.com
+  email = wizzup@gmail.com
 
 [core]
-  editor = vim
+	editor = /usr/bin/env nvim
 
 [color]
   ui          = true

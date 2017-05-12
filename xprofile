@@ -1,0 +1,16 @@
+# vim: ft=config cms=#%s
+#
+# .xprofile : LigthDM using this instead of .xinitrc
+#
+
+# grab customized resource (console color and fonts)
+[[ -e ~/.Xresources ]] && xrdb -merge ~/.Xresources &
+
+# keyboard options
+setxkbmap -layout "us, th" -option 'grp:lalt_lshift_toggle,caps:swapescape' &
+
+# system tray
+trayer --edge top --align right --SetDockType true --SetPartialStrut true --expand true --widthtype request --transparent true --alpha 255 --height 12 > .trayer.log &
+
+# set the cursoe as pointer, otherwise X will appear as cursor
+xsetroot -cursor_name left_ptr -gray &

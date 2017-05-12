@@ -1,0 +1,5 @@
+-- vim: ft=config cms=--%s
+-- ~/.ghci
+-- GHCi configuration file
+
+:set editor nvim

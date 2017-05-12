@@ -9,42 +9,35 @@ Xft.hintstyle:  hintslight
 Xcursor.theme: Vanilla-DMZ-AA
 Xcursor.size:  22
 
-! urxvt settings to match gnome-terminal "Linux console" scheme
-! foreground/background
-! URxvt*background: #000000
-URxvt*foreground: #ffffff
-! black
-URxvt.color0  : #000000
-URxvt.color8  : #555555
-! red
-URxvt.color1  : #AA0000
-URxvt.color9  : #FF5555
-! green
-URxvt.color2  : #00AA00
-URxvt.color10 : #55FF55
-! yellow
-URxvt.color3  : #AA5500
-URxvt.color11 : #FFFF55
-! blue
-URxvt.color4  : #0000AA
-URxvt.color12 : #5555FF
-! magenta
-URxvt.color5  : #AA00AA
-URxvt.color13 : #FF55FF
-! cyan
-URxvt.color6  : #00AAAA
-URxvt.color14 : #55FFFF
-! white
-URxvt.color7  : #AAAAAA
-URxvt.color15 : #FFFFFF
-! font
-URxvt*font: xft:DejaVu Sans Mono:pixelsize=12
-URxvt*boldFont: xft:DejaVu Sans Mono:pixelsize=12
-! scrollbar
-URxvt.scrollBar: False
-! transparency (composite)
-URxvt*depth: 32
-URxvt*background: rgba:0000/0000/0000/dddd
-! transparency (fake)
-! urxvt*transparent: true
-! urxvt*shading: 30
+! Colors  --------------------------------------------------------------------
+#define wb_bg           #1c1c1c
+#define wb_fg           #f6f3e8
+#define wb_cur          #656565
+#define wb_sel          #444444
+#define wb_grey         #99968b
+#define wb_blue         #8ac6f2
+#define wb_red          #e5786d
+#define wb_yellow       #cae682
+#define wb_ltgreen      #e7f6da
+#define wb_green        #95e454
+#define wb_dkgrey       #8f8f8f
+
+*.background:  wb_bg
+*.foreground:  wb_fg
+*.cursorColor: wb_cur
+*.color0:      black
+*.color1:      wb_red
+*.color2:      wb_green
+*.color3:      wb_yellow
+*.color4:      wb_blue
+*.color5:      wb_blue
+*.color6:      wb_blue
+*.color7:      wb_grey
+*.color9:      wb_dkgrey
+*.color8:      wb_red
+*.color10:     wb_green
+*.color11:     wb_yellow
+*.color12:     wb_blue
+*.color13:     wb_blue
+*.color14:     wb_blue
+*.color15:     white

@@ -1,23 +1,29 @@
-#
+# vim: ft=config cms=#%s
 # ~/.bashrc
-#
 
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
+#
+# List files
+#
+# list with color by default
 alias ls='ls --color=auto'
-alias la='ls --color=auto -A'
-alias ll='ls --color=auto -l'
-alias lla='ls --color=auto -lA'
-alias l.='ls --color=auto -d .*'
-alias ll.='ls --color=auto -dl .*'
-alias lx='find . -type f -executable -maxdepth 1'
-alias vless='/usr/share/vim/vim73/macros/less.sh'
-alias ydt='youtube-dl -t'
-alias yttd='echo "youtube-dl -t $@" >> YTTODO'
-alias ar2c3='aria2c -x3 -c'
-alias artodo='echo "aria2c -x3 -c $@" >> ARTODO'
+# list links
+alias ll='find . -maxdepth 1 -type l | xargs -i ls -al {} | column -t'
+# list executable
+alias lx='find . -maxdepth 1 -type f -executable'
+# list hidden
+alias lh='ls -al | grep " \."'
 
+## youtube download add queue entry to YTTODO file
+alias yttd='echo youtube-dl -o "\"%(uploader)s-%(title)s-%(id)s.%(ext)s"\" $@ >> YTTODO'
+
+#
+# Exports
+#
+# vim as default editor
+export EDITOR=vim
 export TZ='Asia/Bangkok'
-
-PS1='[\u@\h \W]\$ '
+export XDG_CONFIG_HOME=~/.config
+export PS1="[\u@ \w] \n$ "
