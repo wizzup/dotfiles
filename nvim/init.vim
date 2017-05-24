@@ -38,7 +38,6 @@ call plug#begin()
 
     "" linter
     Plug 'w0rp/ale'
-    " Plug 'wizzup/ale'
 
     "" color scheme
     Plug 'vim-scripts/wombat256.vim'
@@ -85,7 +84,7 @@ nmap ga <Plug>(EasyAlign)
 let g:deoplete#enable_at_startup = 1
 
 " ale
-let g:ale_linters = {'haskell':['stack-ghc', 'hlint']}
+let g:ale_linters = {'haskell':['ghc-mod', 'hlint']}
 " let g:ale_linters = {'haskell':['stack-ghc-mod','stack-ghc','hlint', 'stack-hdevtools']}
 
 " nerdtree
@@ -194,6 +193,9 @@ vmap > >gv
 syntax on
 filetype plugin on
 filetype indent on
+
+" show list-chars
+set list
 
 " Tabs and r/l shift
 set tabstop=4       " mostly of my work I use 4 space indentation

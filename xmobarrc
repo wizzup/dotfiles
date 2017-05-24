@@ -3,13 +3,13 @@
 -- xmobar configuration file
 --
 
-Config { font = "xft:Monospace:pixelsize=12"
+Config { font = "xft:DejaVu Sans Mono:pixelsize=14"
        , additionalFonts = []
-       , borderColor = "black"
        , border = NoBorder
+       , borderColor = "black"
        , bgColor = "black"
        , fgColor = "grey"
-       , alpha = 255
+       , alpha = 127
        , position = Top
        , textOffset = -1
        , iconOffset = -1
@@ -26,9 +26,10 @@ Config { font = "xft:Monospace:pixelsize=12"
                     , Run Com "uname" ["-r"] "" 36000
                     , Run Date "%a %b %_d %Y %H:%M:%S" "date" 10
                     , Run StdinReader
+                    , Run Com "bash" [".sensors.sh", "--cpu"] "cputemp" 10
                     , Run Com "nvidia-smi" ["--query-gpu=temperature.gpu", "--format=csv,noheader,nounits"] "gpucoretemp" 10
                     ]
        , sepChar = "%"
        , alignSep = "}{"
-       , template = "%StdinReader%}{| %multicpu% | G.%gpucoretemp%C | %memory% | %enp0s7% | <fc=#ee9a00>%date%</fc>| %uname%"
+       , template = "%StdinReader%}{| %multicpu% %cputemp% | G.%gpucoretemp%C | %memory% | %enp0s7% | <fc=#ee9a00>%date%</fc>| %uname%"
        }

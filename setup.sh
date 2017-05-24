@@ -1,3 +1,6 @@
+#!/usr/bin/env bash
+# create symlinks of configuration files
+
 PWD=`pwd`
 
 echo $PWD
@@ -20,6 +23,7 @@ ln -sfv $PWD/xmonad.hs      ~/.xmonad/xmonad.hs
 ln -sfv $PWD/xprofile       ~/.xprofile
 ln -sfv $PWD/Xresources     ~/.Xresources
 ln -sfv $PWD/inputrc        ~/.inputrc
+ln -sfv $PWD/dunstrc        ~/.dunstrc
 
 echo 'installing nvim vim-plug (autoload)'
 curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
