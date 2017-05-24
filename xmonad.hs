@@ -123,10 +123,10 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
     , ((modm              , xK_period), sendMessage (IncMasterN (-1)))
 
     -- toggle the status bar gap (used with avoidStruts from Hooks.ManageDocks)
-    , ((modm , xK_b), sendMessage ToggleStruts)
+    , ((modm , xK_b ), sendMessage ToggleStruts)
 
     -- Quit xmonad
-    , ((modm .|. shiftMask, xK_q), io exitSuccess)
+    , ((modm .|. shiftMask, xK_q     ), io exitSuccess)
 
     -- Restart xmonad
     -- , ((modm              , xK_q     ), restart "xmonad" True)
