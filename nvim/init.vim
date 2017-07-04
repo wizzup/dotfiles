@@ -40,8 +40,7 @@ call plug#begin()
     Plug 'w0rp/ale'
 
     "" color scheme
-    Plug 'vim-scripts/wombat256.vim'
-    Plug 'altercation/vim-colors-solarized'
+    Plug 'flazz/vim-colorschemes'
 
     "" Tags
     Plug 'majutsushi/tagbar'
@@ -84,6 +83,7 @@ nmap ga <Plug>(EasyAlign)
 let g:deoplete#enable_at_startup = 1
 
 " ale
+let g:ale_history_log_output = 1
 let g:ale_linters = {'haskell':['ghc-mod', 'hlint']}
 " let g:ale_linters = {'haskell':['stack-ghc-mod','stack-ghc','hlint', 'stack-hdevtools']}
 
@@ -231,11 +231,10 @@ set noswapfile
 " omnicompletion default to syntax
 set omnifunc=syntaxcomplete#Complete
 
-" colorscheme wombat256mod
-colorscheme solarized
 set t_Co=256                        " force vim to use 256 colors
-let g:solarized_termcolors=256      " use solarized 256 fallback<Paste>
-set background=dark         " background color brightness
+
+" colorscheme wombat256mod
+colorscheme darkburn
 
 "" ================================================================================
 "" AUTO COMMAND

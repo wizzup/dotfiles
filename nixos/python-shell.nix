@@ -10,7 +10,7 @@ in stdenv.mkDerivation {
   buildInputs = [ py3s ];
 
   shellHook = ''
-    export PS1="\[\033[1;32m\][nix-shell:\w]\n$ \[\033[0m\]"
+    export PS1="\[\033[1;32m\][nix-py3:\w]\n$ \[\033[0m\]"
   '';
 }
 

@@ -24,7 +24,7 @@ Config { font = "xft:DejaVu Sans Mono:pixelsize=14"
                     , Run MultiCpu ["-t", "C.[<autototal>]%"] 10
                     , Run Memory ["-t","M.<usedratio>%"] 10
                     , Run Com "uname" ["-r"] "" 36000
-                    , Run Date "%a %b %_d %Y %H:%M:%S" "date" 10
+                    , Run Date "%a %b %_d %H:%M:%S" "date" 10
                     , Run StdinReader
                     , Run Com "bash" [".sensors.sh", "--cpu"] "cputemp" 10
                     , Run Com "nvidia-smi" ["--query-gpu=temperature.gpu", "--format=csv,noheader,nounits"] "gpucoretemp" 10

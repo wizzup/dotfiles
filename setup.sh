@@ -16,6 +16,7 @@ ln -sfv $PWD/dvol.sh        ~/.dvol.sh
 ln -sfv $PWD/ghci           ~/.ghci
 ln -sfv $PWD/gitconfig      ~/.gitconfig
 ln -sfv $PWD/nvim/init.vim  ~/.config/nvim/init.vim
+ln -sfv $PWD/nvim/ginit.vim  ~/.config/nvim/ginit.vim
 ln -sfv $PWD/termite/config ~/.config/termite/config
 ln -sfv $PWD/tmux.conf      ~/.tmux.conf
 ln -sfv $PWD/xmobarrc       ~/.xmobarrc
