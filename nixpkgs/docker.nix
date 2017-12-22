@@ -6,26 +6,26 @@
 
 with pkgs;
 
-pkgs.dockerTools.buildImage {
+dockerTools.buildImage {
     name = "basic";
     # tag = "latest";
 
-    contents = with pkgs; [
+    contents = [
        bashInteractive
        coreutils
        ];
 
     runAsRoot = ''
       #!${stdenv.shell}
-      mkdir -p /data
+      mkdir -p /mydata
     '';
 
     config = {
       Entrypoint = [ "/bin/bash" ];
 #      Cmd = [ "/bin/busybox" "sh" ];
-      WorkingDir = "/data";
+      WorkingDir = "/mydata";
       Volumes = {
-        "/data" = {};
+        "/mydata" = {};
       };
     };
-  }
+}

@@ -8,7 +8,7 @@ set nocompatible   " Disable vi-compatibility to get VIM full power
 "
 call plug#begin()
 
-    "" backend/required for others plugs
+    "" backend/required for others plugs (ghcmod-vim)
     Plug 'shougo/vimproc', {'do' : 'make'}
 
     "" tmux pane / vim split using same key combination
@@ -39,11 +39,17 @@ call plug#begin()
     "" linter
     Plug 'w0rp/ale'
 
+    "" editorconfig
+    Plug 'editorconfig/editorconfig-vim'
+
     "" color scheme
-    Plug 'flazz/vim-colorschemes'
+    Plug 'morhetz/gruvbox'
 
     "" Tags
     Plug 'majutsushi/tagbar'
+
+    "" GhostText server
+    Plug 'wizzup/vim-ghost', {'branch': 'nix', 'do': ':GhostInstall'}
 
     "" file-type specific plugins
     ""----------------------------------------------------------------
@@ -55,15 +61,34 @@ call plug#begin()
 
     "" haskell
     ""----------------------------------------------------------------
-    Plug 'wizzup/haskellwiki.vim', { 'for': 'haskellwiki' }
+    " haskellwiki syntax
+    " Plug 'wizzup/haskellwiki.vim', { 'for': 'haskellwiki' }
     " syntax highlight for haskell
-    Plug 'neovimhaskell/haskell-vim', { 'for': 'haskell' }
-    Plug 'eagletmt/ghcmod-vim', { 'for': 'haskell' }
-    Plug 'eagletmt/neco-ghc', { 'for': 'haskell' }
+    " Plug 'neovimhaskell/haskell-vim', { 'for': 'haskell' }
+    " ghc-mod integration
+    " Plug 'eagletmt/ghcmod-vim', { 'for': 'haskell' }
+    " completion via ghc-mod
+    " Plug 'eagletmt/neco-ghc', { 'for': 'haskell' }
+    "
     " hoogle integration
-    Plug 'Twinside/vim-hoogle', { 'for': 'haskell' }
+    " Plug 'Twinside/vim-hoogle', { 'for': 'haskell' }
     " Plug 'mpickering/hlint-refactor-vim', { 'for': 'haskell' }
     " Plug 'Haskell-Cuteness'
+
+    "" Nix
+    Plug 'LnL7/vim-nix'
+
+    "" javascript
+    Plug 'ternjs/tern_for_vim', { 'for': 'javascript' }
+
+    "" purescript
+    Plug 'purescript-contrib/purescript-vim', { 'for': 'purescript' }
+
+    "" typescript
+    " Plug 'HerringtonDarkholme/yats.vim', { 'for': 'typescript' }
+
+    "" HTML
+    Plug 'mattn/emmet-vim', { 'for': 'html' }
 
 call plug#end()
 ""====================================================================
@@ -83,9 +108,8 @@ nmap ga <Plug>(EasyAlign)
 let g:deoplete#enable_at_startup = 1
 
 " ale
-let g:ale_history_log_output = 1
+let g:ale_history_log_output = 0
 let g:ale_linters = {'haskell':['ghc-mod', 'hlint']}
-" let g:ale_linters = {'haskell':['stack-ghc-mod','stack-ghc','hlint', 'stack-hdevtools']}
 
 " nerdtree
 nmap <Leader>nt :NERDTreeToggle<CR>
@@ -135,8 +159,11 @@ autocmd FileType haskell nmap <buffer> tq :GhcModType<CR>           " query func
 autocmd FileType haskell nmap <buffer> te :GhcModTypeClear<CR>      " clear type query highlight
 
 " neco-ghc
-let g:haskellmode_completion_ghc = 0
-autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
+" let g:haskellmode_completion_ghc = 0
+" autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
+" let g:necoghc_debug = 1
+" let g:necoghc_use_stack = 1
+" let g:necoghc_enable_detailed_browse = 1
 
 ""====================================================================
 
@@ -155,6 +182,9 @@ autocmd BufWinLeave *.py setlocal foldexpr< foldmethod<
 autocmd FileType python nmap <buffer> <Leader>r :w<CR>:!python %<CR>
 autocmd FileType python nmap <buffer> <Leader>ri :w<CR>:!python % < input<CR>
 " ------------------------------------------------------------------------
+
+" javascript
+let g:tern#command=['tern']
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " global settings
@@ -233,8 +263,8 @@ set omnifunc=syntaxcomplete#Complete
 
 set t_Co=256                        " force vim to use 256 colors
 
-" colorscheme wombat256mod
-colorscheme darkburn
+set bg=dark
+colorscheme gruvbox
 
 "" ================================================================================
 "" AUTO COMMAND
@@ -253,8 +283,10 @@ augroup myAuFiletype
     "" autocmd FileType haskell setlocal makeprg=ghc\ -fno-code\ %
 
     " write and run
-    autocmd FileType haskell nmap <buffer> <Leader>r :w<CR>:!stack exec runhaskell %<CR>
-    autocmd FileType haskell nmap <buffer> <Leader>ri :w<CR>:!stack exec runhaskell % < input<CR>
+    autocmd FileType haskell nmap <buffer> <Leader>r :w<CR>:!runhaskell %<CR>
+    autocmd FileType haskell nmap <buffer> <Leader>ri :w<CR>:!runhaskell % < input<CR>
+    " autocmd FileType haskell nmap <buffer> <Leader>r :w<CR>:!stack exec runhaskell %<CR>
+    " autocmd FileType haskell nmap <buffer> <Leader>ri :w<CR>:!stack exec runhaskell % < input<CR>
 
     " For all text files set 'textwidth' to 78 characters.
     autocmd FileType haskell setlocal textwidth=78
@@ -285,6 +317,10 @@ if !exists(":DiffOrig")
     command DiffOrig vert new | set bt=nofile | r ++edit # | 0d_ | diffthis
         \ | wincmd p | diffthis
 endif
+
+function StripTrailingWhitespace()
+    %s/\s\+$//e
+endfunction
 
 "" ================================================================================
 "" old/unused stuffs (for reference)

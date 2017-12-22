@@ -1,5 +1,3 @@
--- vim: ft=config cms=--%s
---
 -- ~/.xmonad/xmonad.hs
 -- xmonad config file.
 --

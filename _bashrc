@@ -1,4 +1,4 @@
-# vim: ft=config cms=#%s
+# vim: ft=sh cms=#\ %s
 # ~/.bashrc
 
 # If not running interactively, don't do anything
@@ -19,14 +19,32 @@ alias lh='ls -al | grep " \."'
 ## youtube download add queue entry to YTTODO file
 alias yttd='echo youtube-dl -f "\"bestvideo[height<=?720]+bestaudio/best"\" -o "\"%(uploader)s-%(title)s-%(id)s.%(ext)s"\" $@ >> YTTODO'
 
-#
-# Exports
-#
-# vim as default editor
-export EDITOR=nvim
-export TZ='Asia/Bangkok'
-export PS1="[\u@ \w] \n$ "
+## use nixpkgs form git
+alias nsg='nix-shell -I nixpkgs=/nix/nixpkgs'
 
+# ssh term is xterm
+alias ssh='TERM=xterm ssh'
+
+#
+# VAR envs for interactive loging shell
+#
+
+# nvim as default editor
+EDITOR=nvim
+
+#
+# Exports envs for every programs
+#
+
+# timezone
+export TZ='Asia/Bangkok'
+
+# git prompt
+GIT_PROMPT_SH=/run/current-system/sw/etc/bash_completion.d/git-prompt.sh
+[ -f $GIT_PROMPT_SH ]; source $GIT_PROMPT_SH && unset GIT_PROMPT_SH
+export PS1='[\u@ \W]$(__git_ps1 "(%s)")$ '
+
+# XDG
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_CACHE_HOME="$HOME/.cache"
 export XDG_DATA_HOME="$HOME/.local/share"

@@ -1,0 +1,30 @@
+# vim: ft=config cms=#%s
+#
+# .xprofile : for SDDM
+
+# grab customized resource (console color and fonts)
+[[ -e ~/.Xresources ]] && xrdb -merge ~/.Xresources &
+
+# dbus notifiacaion
+dunst -config .dunstrc &
+
+# set the cursor as pointer, otherwise X will appear as cursor
+xsetroot -cursor_name left_ptr &
+
+# desktop wallpaper
+feh --bg-center --no-xinerama .walpaper.jpg &
+
+# pluse audio system tray
+# pasystray &
+
+# re-adjust screen resolution
+# xrandr --output VGA-0 --auto --primary --output DVI-I-1 --auto --right-of VGA-0
+
+# keyboard options
+# setxkbmap -layout "us, th" -option 'grp:lalt_lshift_toggle,caps:swapescape' &
+
+# system tray
+# trayer --edge top --align right --SetDockType true --SetPartialStrut true --expand true --widthtype request --transparent true --alpha 255 --height 12 > .trayer.log &
+
+## start clipboard manager without icon
+#parcellite &
