@@ -14,7 +14,8 @@ import System.Exit
 
 -- The preferred terminal program.
 myTerminal :: String
-myTerminal = "termite"
+myTerminal = "urxvt"
+-- myTerminal = "termite"
 
 -- Width of the window border in pixels.
 --
@@ -260,10 +261,12 @@ main = xmonad =<< statusBar myBar myPP toggleStrutsKey defaults
 -- Command to launch the bar.
 myBar :: String
 myBar = "xmobar"
+-- myBar = "taffybar"
 
 -- Custom PP, configure it as you like. It determines what is being written to the bar.
 myPP :: PP
 myPP = xmobarPP
+-- myPP = defaultPP
 
 -- Key binding to toggle the gap for the bar.
 toggleStrutsKey :: XConfig t -> (KeyMask, KeySym)

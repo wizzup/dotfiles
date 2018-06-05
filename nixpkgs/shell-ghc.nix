@@ -6,8 +6,10 @@
 # To list avaliable ghc version: 
 # $ nix-env -qaPA nixos.haskell.compiler
 
-
+# { pkgs ? import (fetchTarball { url = "https://github.com/nixos/nixpkgs/archive/master.tar.gz"; }) {}
+# , compiler ? "ghc802" }:
 { pkgs ? import <nixpkgs> {}, compiler ? "ghc802" }:
+
 with pkgs.haskell.packages.${compiler};
 
 let

@@ -20,7 +20,11 @@ alias lh='ls -al | grep " \."'
 alias yttd='echo youtube-dl -f "\"bestvideo[height<=?720]+bestaudio/best"\" -o "\"%(uploader)s-%(title)s-%(id)s.%(ext)s"\" $@ >> YTTODO'
 
 ## use nixpkgs form git
-alias nsg='nix-shell -I nixpkgs=/nix/nixpkgs'
+alias nsg='nix-shell -I nixpkgs="https://github.com/NixOS/nixpkgs/archive/master.tar.gz"'
+alias nbg='nix-build -I nixpkgs="https://github.com/NixOS/nixpkgs/archive/master.tar.gz"'
+## use nixpkgs form local repo
+alias nsl='nix-shell -I nixpkgs=/nix/nixpkgs'
+alias nbl='nix-build -I nixpkgs=/nix/nixpkgs'
 
 # ssh term is xterm
 alias ssh='TERM=xterm ssh'
@@ -30,7 +34,7 @@ alias ssh='TERM=xterm ssh'
 #
 
 # nvim as default editor
-EDITOR=nvim
+export EDITOR=nvim
 
 #
 # Exports envs for every programs
@@ -40,7 +44,8 @@ EDITOR=nvim
 export TZ='Asia/Bangkok'
 
 # git prompt
-GIT_PROMPT_SH=/run/current-system/sw/etc/bash_completion.d/git-prompt.sh
+# GIT_PROMPT_SH=/run/current-system/sw/etc/bash_completion.d/git-prompt.sh
+GIT_PROMPT_SH=/etc/profiles/per-user/wizzup/etc/bash_completion.d/git-prompt.sh
 [ -f $GIT_PROMPT_SH ]; source $GIT_PROMPT_SH && unset GIT_PROMPT_SH
 export PS1='[\u@ \W]$(__git_ps1 "(%s)")$ '
 

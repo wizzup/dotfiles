@@ -2,19 +2,13 @@
 # /etc/nixos/configuration.nix
 
 { config, pkgs, ... }:
+with pkgs;
 
 {
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
     ];
-
-  boot.loader.grub = {
-    enable = true;
-    version = 2;
-
-    device = "/dev/sda";
-  };
 
   zramSwap = {
     enable = true;
@@ -28,9 +22,10 @@
     defaultGateway = "192.168.1.1";
     nameservers = ["8.8.8.8" "8.8.4.4"];
     interfaces.enp0s7 = {
-        ipAddress = "192.168.1.4";
-        prefixLength = 24;
-      };
+      # ipAddress = "192.168.1.4";
+      # prefixLength = 24;
+      ipv4.addresses = [{ address = "192.168.1.4"; prefixLength = 24; }];
+    };
   };
 
   i18n = {
@@ -40,6 +35,7 @@
 
   time.timeZone = "Asia/Bangkok";
 
+  nix.maxJobs = lib.mkDefault 2;
   # nix.useSandbox = true;
   # nix.binaryCaches = [ "https://cache.nixos.org" "https://nixcache.reflex-frp.org" ];
   # nix.binaryCachePublicKeys = [ "ryantrinkle.com-1:JJiAKaRv9mWgpVAz8dwewnZe0AzzEAzPkagE9SP5NWI=" ];
@@ -48,53 +44,28 @@
     system = "x86_64-linux";
 
     config.allowUnfree = true;
-    # config.virtualbox.enableExtensionPack = true;
+    config.virtualbox.enableExtensionPack = true;
   };
 
-  programs.bash.enableCompletion = true;
-  programs.command-not-found.enable = true;
+  programs = {
+    bash.enableCompletion = true;
+    command-not-found.enable = true;
+  };
 
-  environment.systemPackages = with pkgs; [
-    ## terminal apps
-    btrfs-progs
-    htop
-    file
-    gcc
-    git
-    gnumake
-    neovim
-    p7zip
-    tmux
-    tree
-    unzip
-    wget
-    xsel
-    jre
+  ##  fonts
+  fonts = {
+    enableDefaultFonts = true;
 
-    ## graphical apps
-    # firefox-devedition-bin
-    # gnucash26
-    chromium
-    ffmpegthumbnailer
-    firefox
-    gnucash
-    keepassx2
-    libreoffice-fresh
-    neovim-qt
-    scrot
-    transmission_gtk
-    vlc
+    fonts = [
+      google-fonts
+      noto-fonts
+      noto-fonts-cjk
+      terminus_font
+      terminus_font_ttf
+    ];
+  };
 
-    gnome2.gnome_icon_theme
-    gnome3.gconf
-    gnome3.nautilus
-    gnome3.evince
-    gnome3.dconf-editor
-    gnome3.file-roller
-    gnome3.gnome-disk-utility
-    gnome3.gnome_control_center
-    hicolor_icon_theme
-    shared_mime_info
+  environment.systemPackages = [
 
     ## xmonad utils
     dmenu
@@ -105,44 +76,54 @@
     rxvt_unicode
     trayer
     pasystray
+    pavucontrol
     dunst
+    feh
+    # taffybar
+    alsaUtils
 
     ## haskell packages
     haskellPackages.xmobar
 
     # openbox utils
     obconf
+    tint2
 
-    ## fonts
-    google-fonts
-    # dejavu_fonts
-    # noto-fonts
+    # icons
+    arc-icon-theme
+    hicolor_icon_theme
+    gnome2.gnome_icon_theme
+    gnome3.adwaita-icon-theme
 
   ];
 
   # services = {
     # ipfs.enable = true;
     # openssh.enable = true;
+    # openssh.permitRootLogin = "yes";
   # };
 
   services.printing = {
     enable = true;
-    drivers = [ pkgs.samsung-unified-linux-driver ];
+    drivers = [ samsung-unified-linux-driver ];
   };
 
-  services.dbus.packages = [ pkgs.gnome3.dconf ];
+  services.dbus.packages = [ gnome3.dconf ];
 
   services.udisks2.enable = true;
 
   services.gnome3 = {
     sushi.enable = true;
     gvfs.enable = true;
+    gnome-disks.enable = true;
   };
 
   services.journald.extraConfig = ''
     SystemMaxUse=50M
     MaxRetentionSec=10day
     '';
+
+  hardware.pulseaudio.enable = true;
 
   hardware.opengl = {
     driSupport = true;
@@ -161,7 +142,7 @@
           { output = "DVI-I-2";}
         ];
 
-        # windowManager.openbox.enable = true;
+        windowManager.openbox.enable = true;
 
         windowManager.xmonad = {
           enable = true;
@@ -175,6 +156,8 @@
           enable = true;
           autoNumlock = true;
         };
+
+        # desktopManager.lxqt.enable = true;
     };
 
   virtualisation.docker = {
@@ -182,7 +165,7 @@
     storageDriver = "btrfs";
   };
 
-  # virtualisation.virtualbox.host.enable = true;
+  virtualisation.virtualbox.host.enable = true;
 
   users.extraUsers = {
     wizzup = {
@@ -190,12 +173,65 @@
       home = "/home/wizzup";
       description = "wizzup";
       extraGroups = ["wheel" "docker" "vboxusers"];
+      packages = [
+        ## terminal apps
+        btrfs-progs
+        file
+        gcc
+        git
+        gnumake
+        htop
+        neovim
+        p7zip
+        psmisc
+        tmux
+        tree
+        unrar
+        unzip
+        wget
+        xsel
+        # jre
+
+        ## graphical apps
+        # firefox-devedition-bin
+        # gnucash26
+        chromium
+        ffmpegthumbnailer
+        firefox
+        gnucash
+        keepassx2
+        libreoffice-fresh
+        neovim-qt
+        scrot
+        transmission_gtk
+        vlc
+
+        gnome3.dconf-editor
+        gnome3.eog
+        gnome3.evince
+        gnome3.file-roller
+        gnome3.gconf
+        gnome3.gnome-disk-utility
+        gnome3.gnome_control_center
+        gnome3.nautilus
+        shared_mime_info
+        shotwell
+
+        ];
     };
 
     game = {
       isNormalUser = true;
       home = "/home/game";
       description = "game";
+      packages = [
+        steam
+      ];
     };
+
   };
+
+  # system.stateVersion = "18.03";
+  system.nixos.stateVersion = "18.03";
+
 }

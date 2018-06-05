@@ -8,9 +8,20 @@
     [ <nixpkgs/nixos/modules/installer/scan/not-detected.nix>
     ];
 
-  boot.initrd.availableKernelModules = [ "ohci_pci" "ehci_pci" "pata_amd" "sata_nv" "usb_storage" "usbhid" "sd_mod" ];
+  # wait for hdd to be ready
+  boot.initrd.postDeviceCommands = "sleep 1s";
+
+  boot.initrd.availableKernelModules = [
+    "ohci_pci" "ehci_pci" "pata_amd" "sata_nv" "usb_storage" "usbhid" "sd_mod"
+  ];
+
   boot.kernelModules = [ "kvm-amd" ];
-  boot.extraModulePackages = [ ];
+
+  boot.loader.grub = {
+    enable = true;
+    version = 2;
+    device = "/dev/disk/by-uuid/eaf30e64-0a90-447f-b53d-1598fe46a8a9";
+  };
 
   fileSystems."/" =
     { device = "/dev/disk/by-uuid/eaf30e64-0a90-447f-b53d-1598fe46a8a9";
@@ -36,8 +47,5 @@
       options = [ "subvol=@data" ];
     };
 
-  swapDevices = [ ];
-
-  nix.maxJobs = lib.mkDefault 2;
   powerManagement.cpuFreqGovernor = "ondemand";
 }

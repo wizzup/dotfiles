@@ -69,11 +69,15 @@ call plug#begin()
     " Plug 'eagletmt/ghcmod-vim', { 'for': 'haskell' }
     " completion via ghc-mod
     " Plug 'eagletmt/neco-ghc', { 'for': 'haskell' }
-    "
+    " intero (need stack)
+    " Plug 'parsonsmatt/intero-neovim', { 'for': 'haskell' }
     " hoogle integration
     " Plug 'Twinside/vim-hoogle', { 'for': 'haskell' }
     " Plug 'mpickering/hlint-refactor-vim', { 'for': 'haskell' }
     " Plug 'Haskell-Cuteness'
+
+    " Plug 'autozimu/LanguageClient-neovim', {'branch': 'next', 'do': './install.sh' }
+    " let g:LanguageClient_serverCommands = { 'haskell': ['hie', '--lsp'] }
 
     "" Nix
     Plug 'LnL7/vim-nix'
@@ -81,14 +85,21 @@ call plug#begin()
     "" javascript
     Plug 'ternjs/tern_for_vim', { 'for': 'javascript' }
 
+    "" kotlin
+    Plug 'udalov/kotlin-vim', { 'for': 'kotlin' }
+
     "" purescript
     Plug 'purescript-contrib/purescript-vim', { 'for': 'purescript' }
 
     "" typescript
     " Plug 'HerringtonDarkholme/yats.vim', { 'for': 'typescript' }
+    Plug 'leafgarland/typescript-vim', { 'for': 'typescript' }
 
     "" HTML
     Plug 'mattn/emmet-vim', { 'for': 'html' }
+
+    "" LaTex
+    Plug 'lervag/vimtex', { 'for': 'tex' }
 
 call plug#end()
 ""====================================================================
@@ -159,11 +170,11 @@ autocmd FileType haskell nmap <buffer> tq :GhcModType<CR>           " query func
 autocmd FileType haskell nmap <buffer> te :GhcModTypeClear<CR>      " clear type query highlight
 
 " neco-ghc
-" let g:haskellmode_completion_ghc = 0
-" autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
+let g:haskellmode_completion_ghc = 0
+autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
 " let g:necoghc_debug = 1
 " let g:necoghc_use_stack = 1
-" let g:necoghc_enable_detailed_browse = 1
+let g:necoghc_enable_detailed_browse = 1
 
 ""====================================================================
 
@@ -237,7 +248,7 @@ set shiftround      " Round indent to nearest shiftwidth multiple
 set smarttab        " work fluently with spaces as tab
 set shiftround      " round indent to multiple of shiftwidth
 set autoindent      " auto indent on next line insertion
-set smartindent     " adj indent dept to where it should be
+" set smartindent     " adj indent dept to where it should be
 
 " splitting behaviour
 set splitbelow
@@ -318,7 +329,7 @@ if !exists(":DiffOrig")
         \ | wincmd p | diffthis
 endif
 
-function StripTrailingWhitespace()
+function! StripTrailingWhitespace()
     %s/\s\+$//e
 endfunction
 
