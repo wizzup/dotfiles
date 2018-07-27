@@ -1,15 +1,8 @@
-! Xft settings ---------------------------------------------------------------
-Xft.dpi:        96
-Xft.antialias:  true
-Xft.rgba:       rgb
-Xft.hinting:    true
-Xft.hintstyle:  hintslight
+! ~./.Xresources
 
-! Xcursor --------------------------------------------------------------------
-Xcursor.theme: Vanilla-DMZ-AA
-Xcursor.size:  22
-
-! Dracula Xresources palette
+!-------------------------------------------------------------------------------
+! Colors
+!-------------------------------------------------------------------------------
 *.foreground: #F8F8F2
 *.background: #282A36
 *.color0:     #000000
@@ -29,29 +22,27 @@ Xcursor.size:  22
 *.color7:     #BFBFBF
 *.color15:    #E6E6E6
 
+! Xft settings ---------------------------------------------------------------
+Xft.dpi:        96
+Xft.antialias:  true
+Xft.rgba:       rgb
+Xft.hinting:    true
+Xft.hintstyle:  hintslight
+
+! Xcursor --------------------------------------------------------------------
+Xcursor.theme: Vanilla-DMZ-AA
+Xcursor.size:  22
+
 !-------------------------------------------------------------------------------
-! URxvt settings
-! Colours lifted from Solarized (http://ethanschoonover.com/solarized)
-! More info at:
-! http://pod.tst.eu/http://cvs.schmorp.de/rxvt-unicode/doc/rxvt.1.pod
+! urxvt settings
+! to list all configurable options: urxvt --help 2>&1
 !-------------------------------------------------------------------------------
 
 URxvt.depth:           32
-URxvt.geometry:        90x30
-URxvt.transparent:     false
-URxvt.fading:          0
-! URxvt.urgentOnBell:   true
-! URxvt.visualBell:     true
-URxvt.saveLines:       50
-URxvt.internalBorder:  3
-URxvt.lineSpace:       0
+URxvt.fading:          30
 
 ! Fonts
-URxvt*font:            xft:Monospace:pixelsize=14
-URxvt*boldFont:        xft:Monospace:pixelsize=14
-
-! Fix font space
-! URxvt*letterSpace:     -1
+URxvt.font:            xft:Monospace:pixelsize=14
 
 ! Scrollbar
 URxvt.scrollStyle:     rxvt
@@ -59,14 +50,11 @@ URxvt.scrollBar:       false
 
 ! Perl extensions
 URxvt.perl-ext-common: default,matcher
+URxvt.url-launcher:    /run/current-system/sw/bin/xdg-open
 URxvt.matcher.button:  1
-URxvt.urlLauncher:     firefox
 
 ! Cursor
 URxvt.cursorColor:     #657b83
-! URxvt.cursorBlink:     true
-! URxvt.cursorUnderline: false
 
 ! Pointer
 URxvt.pointerBlank:    true
-

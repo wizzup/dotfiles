@@ -6,21 +6,20 @@
 # To list avaliable ghc version: 
 # $ nix-env -qaPA nixos.haskell.compiler
 
-# { pkgs ? import (fetchTarball { url = "https://github.com/nixos/nixpkgs/archive/master.tar.gz"; }) {}
-# , compiler ? "ghc802" }:
-{ pkgs ? import <nixpkgs> {}, compiler ? "ghc802" }:
+{ pkgs ? import <nixpkgs> {}, compiler ? "ghc822" }:
 
+with pkgs;
 with pkgs.haskell.packages.${compiler};
 
 let
   ghc = ghcWithPackages (ps: with ps; [
           hspec
+          fgl
         ]);
 in
   pkgs.stdenv.mkDerivation {
     name = "${compiler}-sh";
-    buildInputs = [ ghc hlint ghc-mod ];
-
+    buildInputs = [ ghc hie82 ];
     shellHook = ''
       eval "$(egrep ^export "$(type -p ghc)")"
       export PS1="\[\033[1;32m\][$name:\W]\n$ \[\033[0m\]"

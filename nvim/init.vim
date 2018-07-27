@@ -66,9 +66,9 @@ call plug#begin()
     " syntax highlight for haskell
     " Plug 'neovimhaskell/haskell-vim', { 'for': 'haskell' }
     " ghc-mod integration
-    " Plug 'eagletmt/ghcmod-vim', { 'for': 'haskell' }
+    Plug 'eagletmt/ghcmod-vim', { 'for': 'haskell' }
     " completion via ghc-mod
-    " Plug 'eagletmt/neco-ghc', { 'for': 'haskell' }
+    Plug 'eagletmt/neco-ghc', { 'for': 'haskell' }
     " intero (need stack)
     " Plug 'parsonsmatt/intero-neovim', { 'for': 'haskell' }
     " hoogle integration

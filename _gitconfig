@@ -3,7 +3,7 @@
   email = wizzup@gmail.com
 
 [core]
-	editor = /usr/bin/env nvim
+  editor = /usr/bin/env nvim
 
 [color]
   ui          = true
@@ -17,3 +17,9 @@
 
 [github]
   user  = wizzup
+
+[diff]
+  tool = nvimdiff
+
+[difftool "nvimdiff"]
+  cmd = nvim -d $LOCAL $REMOTE

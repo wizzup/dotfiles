@@ -1,3 +1,5 @@
+# neovim with simple-websocket-server for ghostText webextensions
+
 { neovim, python3Packages, fetchFromGitHub }:
 
 let
@@ -10,7 +12,7 @@ let
         owner = "dpallot";
         repo = "simple-websocket-server";
         rev = "master";
-        sha256 = "001ppb9xv6ca64p2zgpiwjdba34yafph4imk9nisd2xrjibgnni3";
+        sha256 = "19rcpdx4vxg9is1cpyh9m9br5clyzrpb7gyfqsl0g3im04m098n5";
       };
 
       doCheck = false;

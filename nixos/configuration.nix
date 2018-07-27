@@ -35,10 +35,17 @@ with pkgs;
 
   time.timeZone = "Asia/Bangkok";
 
-  nix.maxJobs = lib.mkDefault 2;
-  # nix.useSandbox = true;
-  # nix.binaryCaches = [ "https://cache.nixos.org" "https://nixcache.reflex-frp.org" ];
-  # nix.binaryCachePublicKeys = [ "ryantrinkle.com-1:JJiAKaRv9mWgpVAz8dwewnZe0AzzEAzPkagE9SP5NWI=" ];
+  nix = {
+    maxJobs = lib.mkDefault 2;
+    # useSandbox = true;
+    # binaryCaches = [ "https://cache.nixos.org" "https://nixcache.reflex-frp.org" ];
+    # binaryCachePublicKeys = [ "ryantrinkle.com-1:JJiAKaRv9mWgpVAz8dwewnZe0AzzEAzPkagE9SP5NWI=" ];
+
+    extraOptions = ''
+      gc-keep-outputs = true
+      gc-keep-derivations = true
+    '';
+  };
 
   nixpkgs = {
     system = "x86_64-linux";
@@ -73,7 +80,7 @@ with pkgs;
     gmrun
     lm_sensors
     termite
-    rxvt_unicode
+    rxvt_unicode-with-plugins
     trayer
     pasystray
     pavucontrol
@@ -95,6 +102,8 @@ with pkgs;
     gnome2.gnome_icon_theme
     gnome3.adwaita-icon-theme
 
+    # system utils
+    parted
   ];
 
   # services = {
@@ -103,9 +112,14 @@ with pkgs;
     # openssh.permitRootLogin = "yes";
   # };
 
+  services.avahi = {
+    enable = true;
+    nssmdns = true;
+  };
+
   services.printing = {
     enable = true;
-    drivers = [ samsung-unified-linux-driver ];
+    # drivers = [ samsung-unified-linux-driver ];
   };
 
   services.dbus.packages = [ gnome3.dconf ];
@@ -123,7 +137,18 @@ with pkgs;
     MaxRetentionSec=10day
     '';
 
-  hardware.pulseaudio.enable = true;
+  # sound via ALSA
+  # sound.enable = true;
+
+  # sound via PulseAudio
+  hardware.pulseaudio = {
+    enable = true;
+    support32Bit = true;
+
+    # pulseaudioLight does *not* have module-x11-publish.so
+    # https://github.com/NixOS/nixpkgs/issues/11970
+    package = pkgs.pulseaudioFull;
+  };
 
   hardware.opengl = {
     driSupport = true;
@@ -137,10 +162,10 @@ with pkgs;
 
         videoDrivers = [ "nvidiaLegacy340" ];
 
-        xrandrHeads = [
-          { output = "DVI-I-1";}
-          { output = "DVI-I-2";}
-        ];
+        # xrandrHeads = [
+        #   { output = "DVI-I-1";}
+        #   { output = "DVI-I-2";}
+        # ];
 
         windowManager.openbox.enable = true;
 
@@ -172,7 +197,7 @@ with pkgs;
       isNormalUser = true;
       home = "/home/wizzup";
       description = "wizzup";
-      extraGroups = ["wheel" "docker" "vboxusers"];
+      extraGroups = ["audio" "wheel" "docker" "vboxusers"];
       packages = [
         ## terminal apps
         btrfs-progs
@@ -200,7 +225,8 @@ with pkgs;
         firefox
         gnucash
         keepassx2
-        libreoffice-fresh
+        # libreoffice-fresh
+        libreoffice-still
         neovim-qt
         scrot
         transmission_gtk
@@ -225,7 +251,7 @@ with pkgs;
       home = "/home/game";
       description = "game";
       packages = [
-        steam
+        # steam
       ];
     };
 
