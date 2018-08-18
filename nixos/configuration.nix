@@ -69,6 +69,7 @@ with pkgs;
       noto-fonts-cjk
       terminus_font
       terminus_font_ttf
+      twemoji-color-font
     ];
   };
 
@@ -236,7 +237,6 @@ with pkgs;
         gnome3.eog
         gnome3.evince
         gnome3.file-roller
-        gnome3.gconf
         gnome3.gnome-disk-utility
         gnome3.gnome_control_center
         gnome3.nautilus

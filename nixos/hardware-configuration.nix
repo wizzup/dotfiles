@@ -23,6 +23,9 @@
     device = "/dev/disk/by-uuid/eaf30e64-0a90-447f-b53d-1598fe46a8a9";
   };
 
+  # clear /tmp on every boot
+  boot.cleanTmpDir = true;
+
   fileSystems."/" =
     { device = "/dev/disk/by-uuid/eaf30e64-0a90-447f-b53d-1598fe46a8a9";
       fsType = "btrfs";

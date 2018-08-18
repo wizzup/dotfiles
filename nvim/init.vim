@@ -2,104 +2,116 @@
 "
 set nocompatible   " Disable vi-compatibility to get VIM full power
 
-""====================================================================
+""==============================================================================
 " Plugins using junegunn/vim-plug
-""====================================================================
+""==============================================================================
 "
 call plug#begin()
-
-    "" backend/required for others plugs (ghcmod-vim)
-    Plug 'shougo/vimproc', {'do' : 'make'}
-
-    "" tmux pane / vim split using same key combination
-    Plug 'christoomey/vim-tmux-navigator'
-
-    "" fuzzy finder
-    Plug 'ctrlpvim/ctrlp.vim'
-
-    "" code commenting
-    Plug 'tomtom/tcomment_vim'
+    "" fancy status line
+    Plug 'vim-airline/vim-airline'
 
     "" text alignment
     Plug 'junegunn/vim-easy-align'
 
+    "" color scheme
+    Plug 'morhetz/gruvbox'
+    Plug 'iCyMind/NeoSolarized'
+
+    "" code commenting
+    Plug 'tomtom/tcomment_vim'
+
+    "" tmux pane / vim split using same key combination
+    Plug 'christoomey/vim-tmux-navigator'
+
     "" autocompletion engine
     Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
-    "" tpope plugins
-    Plug 'tpope/vim-surround'
-    Plug 'tpope/vim-fugitive'
-
-    "" NerdTree
-    Plug 'scrooloose/nerdtree'
-
-    "" fancy status line
-    Plug 'vim-airline/vim-airline'
+    "" backend/required for others plugs (ghcmod-vim)
+    Plug 'shougo/vimproc', {'do' : 'make'}
 
     "" linter
     Plug 'w0rp/ale'
 
-    "" editorconfig
-    Plug 'editorconfig/editorconfig-vim'
+    "" NerdTree
+    Plug 'scrooloose/nerdtree'
 
-    "" color scheme
-    Plug 'morhetz/gruvbox'
-
-    "" Tags
-    Plug 'majutsushi/tagbar'
-
-    "" GhostText server
-    Plug 'wizzup/vim-ghost', {'branch': 'nix', 'do': ':GhostInstall'}
-
-    "" file-type specific plugins
-    ""----------------------------------------------------------------
+    " "" Tags
+    " Plug 'majutsushi/tagbar'
+    "
+    " "" fuzzy finder
+    " Plug 'ctrlpvim/ctrlp.vim'
+    "
+    " "" tpope plugins
+    " Plug 'tpope/vim-surround'
+    " Plug 'tpope/vim-fugitive'
+    "
+    " "" editorconfig
+    " Plug 'editorconfig/editorconfig-vim'
+    "
+    " "" GhostText server
+    " Plug 'wizzup/vim-ghost', {'branch': 'nix', 'do': ':GhostInstall'}
+    "
+    " "" file-type specific plugins
+    " ""----------------------------------------------------------------
 
     "" python
     ""----------------------------------------------------------------
-    Plug 'tmhedberg/SimpylFold', { 'for': 'python' }
+    " completion for deoplete
     Plug 'zchee/deoplete-jedi', { 'for': 'python' }
+    " Plug 'tmhedberg/SimpylFold', { 'for': 'python' }
 
-    "" haskell
-    ""----------------------------------------------------------------
-    " haskellwiki syntax
-    " Plug 'wizzup/haskellwiki.vim', { 'for': 'haskellwiki' }
-    " syntax highlight for haskell
-    " Plug 'neovimhaskell/haskell-vim', { 'for': 'haskell' }
-    " ghc-mod integration
+    " "" haskell
+    " ""----------------------------------------------------------------
+    " ghc-mod integration (need vimproc)
     Plug 'eagletmt/ghcmod-vim', { 'for': 'haskell' }
-    " completion via ghc-mod
+    " completion via ghc-mod for deoplete
     Plug 'eagletmt/neco-ghc', { 'for': 'haskell' }
-    " intero (need stack)
-    " Plug 'parsonsmatt/intero-neovim', { 'for': 'haskell' }
-    " hoogle integration
-    " Plug 'Twinside/vim-hoogle', { 'for': 'haskell' }
-    " Plug 'mpickering/hlint-refactor-vim', { 'for': 'haskell' }
-    " Plug 'Haskell-Cuteness'
-
-    " Plug 'autozimu/LanguageClient-neovim', {'branch': 'next', 'do': './install.sh' }
-    " let g:LanguageClient_serverCommands = { 'haskell': ['hie', '--lsp'] }
+    " " haskellwiki syntax
+    " " Plug 'wizzup/haskellwiki.vim', { 'for': 'haskellwiki' }
+    " " syntax highlight for haskell
+    " " Plug 'neovimhaskell/haskell-vim', { 'for': 'haskell' }
+    " " intero (need stack)
+    " " Plug 'parsonsmatt/intero-neovim', { 'for': 'haskell' }
+    " " hoogle integration
+    " " Plug 'Twinside/vim-hoogle', { 'for': 'haskell' }
+    " " Plug 'mpickering/hlint-refactor-vim', { 'for': 'haskell' }
+    " " Plug 'Haskell-Cuteness'
 
     "" Nix
     Plug 'LnL7/vim-nix'
 
-    "" javascript
-    Plug 'ternjs/tern_for_vim', { 'for': 'javascript' }
+    " "" javascript
+    " Plug 'ternjs/tern_for_vim', { 'for': 'javascript' }
+    "
+    " "" kotlin
+    " Plug 'udalov/kotlin-vim', { 'for': 'kotlin' }
+    "
+    " "" purescript
+    " Plug 'purescript-contrib/purescript-vim', { 'for': 'purescript' }
+    "
+    " "" typescript
+    " " Plug 'HerringtonDarkholme/yats.vim', { 'for': 'typescript' }
+    " Plug 'leafgarland/typescript-vim', { 'for': 'typescript' }
+    "
+    " "" HTML
+    " Plug 'mattn/emmet-vim', { 'for': 'html' }
+    "
+    " "" LaTex
+    " Plug 'lervag/vimtex', { 'for': 'tex' }
 
-    "" kotlin
-    Plug 'udalov/kotlin-vim', { 'for': 'kotlin' }
+    "" Language Server Protocol
+    " Plug 'autozimu/LanguageClient-neovim', {'branch': 'next', 'do': './install.sh' }
+    " let g:LanguageClient_serverCommands = { 'haskell': ['hie', '--lsp'] }
 
-    "" purescript
-    Plug 'purescript-contrib/purescript-vim', { 'for': 'purescript' }
+    Plug 'prabirshrestha/async.vim'
+    Plug 'prabirshrestha/vim-lsp'
 
-    "" typescript
-    " Plug 'HerringtonDarkholme/yats.vim', { 'for': 'typescript' }
-    Plug 'leafgarland/typescript-vim', { 'for': 'typescript' }
+    " "" async completion (NOTE: better use deoplete instead)
+    " Plug 'prabirshrestha/asyncomplete.vim'
+    " Plug 'prabirshrestha/asyncomplete-lsp.vim'
 
-    "" HTML
-    Plug 'mattn/emmet-vim', { 'for': 'html' }
-
-    "" LaTex
-    Plug 'lervag/vimtex', { 'for': 'tex' }
+    "" Emoji completion for deoplete
+    Plug 'fszymanski/deoplete-emoji'
 
 call plug#end()
 ""====================================================================
@@ -108,6 +120,36 @@ call plug#end()
 " plugins settings
 ""====================================================================
 let mapleader=","           " comma is easier to get than back-slash
+
+"" tmux
+"" send text starting from cursor to eol to right tmux's plan
+nnoremap <leader>sr y$:!tmux send-keys -t Right '<C-R>"' C-m <CR><CR>
+
+" vim-lsp
+let g:lsp_log_verbose = 1
+let g:lsp_log_file = expand('/tmp/vim-lsp.log')
+" let g:lsp_signs_enabled = 1           " enable signs
+" let g:lsp_diagnostics_echo_cursor = 1 " enable echo under cursor when in normal mode
+" highlight link LspErrorText GruvboxRedSign
+" highlight clear LspWarningLine
+
+if executable('hie')
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'hie',
+        \ 'cmd': {server_info->[&shell, &shellcmdflag, 'hie --lsp']},
+        \ 'whitelist': ['haskell'],
+        \ })
+endif
+
+if executable('pyls')
+    " pip install python-language-server
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'pyls',
+        \ 'cmd': {server_info->['pyls']},
+        \ 'whitelist': ['python'],
+        \ })
+  endif
+
 
 " vim-easy-align
 " Start interactive EasyAlign in visual mode (e.g. vipga)
@@ -172,9 +214,9 @@ autocmd FileType haskell nmap <buffer> te :GhcModTypeClear<CR>      " clear type
 " neco-ghc
 let g:haskellmode_completion_ghc = 0
 autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
+let g:necoghc_enable_detailed_browse = 1
 " let g:necoghc_debug = 1
 " let g:necoghc_use_stack = 1
-let g:necoghc_enable_detailed_browse = 1
 
 ""====================================================================
 
@@ -203,7 +245,6 @@ let g:tern#command=['tern']
 "
 " Line number, window viewing and formatting
 set number                  " show line number
-set nowrap                  " no auto wrap text line
 set fo-=t                   " don't autowrap while typing
 set showmatch               " show matching brackets
 set wildmode=list:longest   " make commmand completiton work like in shell
@@ -214,6 +255,9 @@ set foldenable              " enalbe folding
 set foldmethod=syntax       " fold by syntax
 set foldcolumn=3            " display fold indicator
 set visualbell              " turn the 'beep' sound off
+set scrolloff=2             " cursor scroll offset
+" set nowrap                  " no auto wrap text line
+" set colorcolumn=80          " highlight col 80
 
 "" keys mappings
 "
@@ -231,7 +275,7 @@ vmap < <gv
 vmap > >gv
 
 " Syntax highlight (these setting need restarting vim)
-syntax on
+syntax on           " enable syntax highlight
 filetype plugin on
 filetype indent on
 
@@ -239,7 +283,7 @@ filetype indent on
 set list
 
 " Tabs and r/l shift
-set tabstop=4       " mostly of my work I use 4 space indentation
+set tabstop=4       " mostly of my work use 4 space indentation
 set softtabstop=4   " count 4 spaces as a tab
 set expandtab       " replace tab with spaces in normal mode
 set shiftwidth=2    " shift 2 spaces each time (when reindent/autoindent)
@@ -272,14 +316,17 @@ set noswapfile
 " omnicompletion default to syntax
 set omnifunc=syntaxcomplete#Complete
 
-set t_Co=256                        " force vim to use 256 colors
-
+"" Colors
 set bg=dark
-colorscheme gruvbox
+" set termguicolors
+" set t_Co=256                        " force vim to use 256 colors
 
-"" ================================================================================
+colorscheme gruvbox
+" colorscheme NeoSolarized
+
+"" =============================================================================
 "" AUTO COMMAND
-"" ================================================================================
+"" =============================================================================
 "" Put these in an autocmd group, so that we can delete them easily.
 augroup myAuFiletype
     autocmd!
@@ -318,9 +365,9 @@ augroup myAuBuffer
     \ endif
 augroup END
 
-"" ================================================================================
+"" =============================================================================
 "" Misc and custom functions
-"" ================================================================================
+"" =============================================================================
 " Convenient command to see the difference between the current buffer and the
 " file it was loaded from, thus the changes you made.
 " Only define it when not defined already.
@@ -333,9 +380,9 @@ function! StripTrailingWhitespace()
     %s/\s\+$//e
 endfunction
 
-"" ================================================================================
+"" =============================================================================
 "" old/unused stuffs (for reference)
-"" ================================================================================
+"" =============================================================================
 
 " " custom completion by Tap (code taken form 'Hacking vim' book)
 " set completeopt=longest,menuone

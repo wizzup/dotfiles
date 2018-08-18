@@ -29,6 +29,9 @@ alias nbl='nix-build -I nixpkgs=/nix/nixpkgs'
 # ssh term is xterm
 alias ssh='TERM=xterm ssh'
 
+# limit ghci memory usage to prevent freezing
+alias ghci='ghci +RTS -M500m -K500m -RTS'
+
 #
 # VAR envs for interactive loging shell
 #

@@ -22,8 +22,8 @@ in
   packageOverrides = super: {
 
     # https://github.com/MarcWeber/hasktags/issues/52
-    hasktags = super.haskellPackages.hasktags.overrideAttrs (
-        z : rec { doCheck = false;}
+    myHasktags = super.haskellPackages.hasktags.overrideAttrs (
+        self : rec { doCheck = false;}
     );
 
     # myVim = vim_configurable.customize {
@@ -38,27 +38,27 @@ in
     myNeovim = callPackage ./nvim/nvim.nix { };
 
     # common python packages with standard nvim
-    pythonEnv = buildEnv {
-      name = "pythonEnv";
+    myPythonEnv = buildEnv {
+      name = "myPythonEnv";
       paths = with python3Packages; [
         (python.buildEnv.override {
             extraLibs = [ jedi flake8 pylint ];
         })
 
-        myNeovim mypy
+        mypy
       ];
     };
 
     # common haskell packages with standard nvim
-    haskellEnv = buildEnv {
-      name = "haskellEnv";
+    myHaskellEnv = buildEnv {
+      name = "myHaskellEnv";
       paths = with super.haskellPackages; [
         (ghcWithPackages (p: with p;
-          [ hspec fgl ]
+          [ doctest fgl split ]
         ))
 
-        myNeovim hie82 hasktags ctags
-        stack cabal-install hpack 
+        hie82 myHasktags ctags
+        stack
         # intero ghc-mod
       ];
     };
