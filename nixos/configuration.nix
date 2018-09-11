@@ -38,8 +38,17 @@ with pkgs;
   nix = {
     maxJobs = lib.mkDefault 2;
     # useSandbox = true;
-    # binaryCaches = [ "https://cache.nixos.org" "https://nixcache.reflex-frp.org" ];
-    # binaryCachePublicKeys = [ "ryantrinkle.com-1:JJiAKaRv9mWgpVAz8dwewnZe0AzzEAzPkagE9SP5NWI=" ];
+
+    binaryCaches = [
+      "https://cache.nixos.org"
+      "https://hie-nix.cachix.org"
+      # "https://nixcache.reflex-frp.org"
+    ];
+
+    binaryCachePublicKeys = [
+      "hie-nix.cachix.org-1:EjBSHzF6VmDnzqlldGXbi0RM3HdjfTU3yDRi9Pd0jTY="
+      # "ryantrinkle.com-1:JJiAKaRv9mWgpVAz8dwewnZe0AzzEAzPkagE9SP5NWI="
+    ];
 
     extraOptions = ''
       gc-keep-outputs = true
@@ -64,9 +73,13 @@ with pkgs;
     enableDefaultFonts = true;
 
     fonts = [
+      dejavu_fonts
+      fira-code
       google-fonts
+      hasklig
       noto-fonts
       noto-fonts-cjk
+      source-code-pro
       terminus_font
       terminus_font_ttf
       twemoji-color-font
@@ -105,6 +118,7 @@ with pkgs;
 
     # system utils
     parted
+    inotify-tools
   ];
 
   # services = {
@@ -191,7 +205,7 @@ with pkgs;
     storageDriver = "btrfs";
   };
 
-  virtualisation.virtualbox.host.enable = true;
+  # virtualisation.virtualbox.host.enable = true;
 
   users.extraUsers = {
     wizzup = {
@@ -257,7 +271,7 @@ with pkgs;
 
   };
 
-  # system.stateVersion = "18.03";
-  system.nixos.stateVersion = "18.03";
+  system.stateVersion = "18.03";
+  # system.nixos.stateVersion = "18.03";
 
 }

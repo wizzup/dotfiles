@@ -4,11 +4,11 @@ with pkgs;
 
 let
   hie-nix = fetchFromGitHub {
-    owner = "domenkozar";
-    repo = "hie-nix";
-    rev = "8f04568aa8c3215f543250eb7a1acfa0cf2d24ed";
-    sha256 = "06ygnywfnp6da0mcy4hq0xcvaaap1w3di2midv1w9b9miam8hdrn";
-  };
+      owner = "domenkozar";
+      repo = "hie-nix";
+      rev = "96af698f0cfefdb4c3375fc199374856b88978dc";
+      sha256 = "1ar0h12ysh9wnkgnvhz891lvis6x9s8w3shaakfdkamxvji868qa";
+    };
 in
 {
   # for building an unfree package with nix-shell, nix-build and nix-env
@@ -20,6 +20,8 @@ in
 
   # my custom packages, can be install with `nix-env`
   packageOverrides = super: {
+
+    ghcid = callPackage ./ghcid/default.nix {};
 
     # https://github.com/MarcWeber/hasktags/issues/52
     myHasktags = super.haskellPackages.hasktags.overrideAttrs (
@@ -57,15 +59,19 @@ in
           [ doctest fgl split ]
         ))
 
-        hie82 myHasktags ctags
-        stack
-        # intero ghc-mod
+        myHasktags ctags
+        stack cabal-install
+        ghcid
+        hie84
+        hdevtools
+        hlint
+        brittany
       ];
     };
 
     # packages which not in nixpkgs
     hie80 = (import hie-nix { }).hie80;
     hie82 = (import hie-nix { }).hie82;
-
+    hie84 = (import hie-nix { }).hie84;
   };
 }

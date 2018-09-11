@@ -27,7 +27,7 @@ call plug#begin()
     Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
     "" backend/required for others plugs (ghcmod-vim)
-    Plug 'shougo/vimproc', {'do' : 'make'}
+    " Plug 'shougo/vimproc', {'do' : 'make'}
 
     "" linter
     Plug 'w0rp/ale'
@@ -35,11 +35,11 @@ call plug#begin()
     "" NerdTree
     Plug 'scrooloose/nerdtree'
 
+    "" fuzzy finder
+    Plug 'ctrlpvim/ctrlp.vim'
+
     " "" Tags
     " Plug 'majutsushi/tagbar'
-    "
-    " "" fuzzy finder
-    " Plug 'ctrlpvim/ctrlp.vim'
     "
     " "" tpope plugins
     " Plug 'tpope/vim-surround'
@@ -63,19 +63,24 @@ call plug#begin()
     " "" haskell
     " ""----------------------------------------------------------------
     " ghc-mod integration (need vimproc)
-    Plug 'eagletmt/ghcmod-vim', { 'for': 'haskell' }
+    " Plug 'eagletmt/ghcmod-vim', { 'for': 'haskell' }
     " completion via ghc-mod for deoplete
-    Plug 'eagletmt/neco-ghc', { 'for': 'haskell' }
+    " Plug 'eagletmt/neco-ghc', { 'for': 'haskell' }
     " " haskellwiki syntax
     " " Plug 'wizzup/haskellwiki.vim', { 'for': 'haskellwiki' }
-    " " syntax highlight for haskell
-    " " Plug 'neovimhaskell/haskell-vim', { 'for': 'haskell' }
+
     " " intero (need stack)
     " " Plug 'parsonsmatt/intero-neovim', { 'for': 'haskell' }
     " " hoogle integration
     " " Plug 'Twinside/vim-hoogle', { 'for': 'haskell' }
     " " Plug 'mpickering/hlint-refactor-vim', { 'for': 'haskell' }
     " " Plug 'Haskell-Cuteness'
+    "
+    " ghcid (disable because annoying screen refreshing)
+    " Plug 'ndmitchell/ghcid', { 'rtp': 'plugins/nvim' }
+    "
+    " syntax highlight for haskell
+    Plug 'neovimhaskell/haskell-vim', { 'for': 'haskell' }
 
     "" Nix
     Plug 'LnL7/vim-nix'
@@ -100,9 +105,11 @@ call plug#begin()
     " Plug 'lervag/vimtex', { 'for': 'tex' }
 
     "" Language Server Protocol
+    " doesn't work on NixOS, need to run `cargo` to build the binary
     " Plug 'autozimu/LanguageClient-neovim', {'branch': 'next', 'do': './install.sh' }
     " let g:LanguageClient_serverCommands = { 'haskell': ['hie', '--lsp'] }
 
+    " This LSP plugin is working
     Plug 'prabirshrestha/async.vim'
     Plug 'prabirshrestha/vim-lsp'
 
@@ -121,8 +128,41 @@ call plug#end()
 ""====================================================================
 let mapleader=","           " comma is easier to get than back-slash
 
+" " Airline
+" let g:airline_powerline_fonts = 1
+"
+" if !exists('g:airline_symbols')
+"     let g:airline_symbols = {}
+" endif
+"
+" " unicode symbols
+" let g:airline_left_sep = '»'
+" let g:airline_left_sep = '▶'
+" let g:airline_right_sep = '«'
+" let g:airline_right_sep = '◀'
+" let g:airline_symbols.linenr = '␊'
+" let g:airline_symbols.linenr = '␤'
+" let g:airline_symbols.linenr = '¶'
+" let g:airline_symbols.branch = '⎇'
+" let g:airline_symbols.paste = 'ρ'
+" let g:airline_symbols.paste = 'Þ'
+" let g:airline_symbols.paste = '∥'
+" let g:airline_symbols.whitespace = 'Ξ'
+"
+" " airline symbols
+" let g:airline_left_sep = ''
+" let g:airline_left_alt_sep = ''
+" let g:airline_right_sep = ''
+" let g:airline_right_alt_sep = ''
+" let g:airline_symbols.branch = ''
+" let g:airline_symbols.readonly = ''
+" let g:airline_symbols.linenr = ''
+
 "" tmux
 "" send text starting from cursor to eol to right tmux's plan
+"" FIXME: single quote (') is not send, need escaping
+"" ex: 'h' send as h
+"" ex: '\'h\'' send as 'h'
 nnoremap <leader>sr y$:!tmux send-keys -t Right '<C-R>"' C-m <CR><CR>
 
 " vim-lsp
@@ -133,6 +173,7 @@ let g:lsp_log_file = expand('/tmp/vim-lsp.log')
 " highlight link LspErrorText GruvboxRedSign
 " highlight clear LspWarningLine
 
+" for vim-lsp (haskell), need hie
 if executable('hie')
     au User lsp_setup call lsp#register_server({
         \ 'name': 'hie',
@@ -141,14 +182,15 @@ if executable('hie')
         \ })
 endif
 
-if executable('pyls')
-    " pip install python-language-server
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'pyls',
-        \ 'cmd': {server_info->['pyls']},
-        \ 'whitelist': ['python'],
-        \ })
-  endif
+" for vim-lsp (python), need pyls
+" if executable('pyls')
+"     " pip install python-language-server
+"     au User lsp_setup call lsp#register_server({
+"         \ 'name': 'pyls',
+"         \ 'cmd': {server_info->['pyls']},
+"         \ 'whitelist': ['python'],
+"         \ })
+"   endif
 
 
 " vim-easy-align
@@ -162,7 +204,7 @@ let g:deoplete#enable_at_startup = 1
 
 " ale
 let g:ale_history_log_output = 0
-let g:ale_linters = {'haskell':['ghc-mod', 'hlint']}
+" let g:ale_linters = {'haskell':['ghc-mod', 'hlint']}
 
 " nerdtree
 nmap <Leader>nt :NERDTreeToggle<CR>
@@ -378,6 +420,24 @@ endif
 
 function! StripTrailingWhitespace()
     %s/\s\+$//e
+endfunction
+
+nnoremap <C-W><C-O> :call MaximizeToggle()<CR>
+
+function! MaximizeToggle()
+  if exists("s:maximize_session")
+    exec "source " . s:maximize_session
+    call delete(s:maximize_session)
+    unlet s:maximize_session
+    let &hidden=s:maximize_hidden_save
+    unlet s:maximize_hidden_save
+  else
+    let s:maximize_hidden_save = &hidden
+    let s:maximize_session = tempname()
+    set hidden
+    exec "mksession! " . s:maximize_session
+    only
+  endif
 endfunction
 
 "" =============================================================================
