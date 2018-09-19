@@ -39,6 +39,14 @@ alias ghci='ghci +RTS -M500m -K500m -RTS'
 # nvim as default editor
 export EDITOR=nvim
 
+# magic-space (!!)/(!-n) expand using spacebar
+# ex: $ ls
+#     $ !!<SPACE> --> ls
+bind Space:magic-space
+
+# nub histories (no duplicate, no space)
+export HISTCONTROL=ignoreboth:erasedups
+
 #
 # Exports envs for every programs
 #
