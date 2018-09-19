@@ -22,6 +22,7 @@ in
   packageOverrides = super: {
 
     ghcid = callPackage ./ghcid/default.nix {};
+    myghcid = ghcid;
 
     # common python packages with standard nvim
     myPythonEnv = buildEnv {
@@ -38,7 +39,7 @@ in
     # common haskell packages with standard nvim
     myHaskellEnv = buildEnv {
       name = "myHaskellEnv";
-      paths = with super.haskellPackages; [
+      paths = with haskellPackages; [
         (ghcWithPackages (p: with p;
           [
             fgl
@@ -47,9 +48,9 @@ in
           ]
         ))
 
-        myHasktags ctags
+        hasktags ctags
         stack cabal-install
-        ghcid
+        myghcid
         hie84
         hdevtools
         hlint

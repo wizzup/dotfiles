@@ -22,8 +22,6 @@ with pkgs;
     defaultGateway = "192.168.1.1";
     nameservers = ["8.8.8.8" "8.8.4.4"];
     interfaces.enp0s7 = {
-      # ipAddress = "192.168.1.4";
-      # prefixLength = 24;
       ipv4.addresses = [{ address = "192.168.1.4"; prefixLength = 24; }];
     };
   };
@@ -50,17 +48,25 @@ with pkgs;
       # "ryantrinkle.com-1:JJiAKaRv9mWgpVAz8dwewnZe0AzzEAzPkagE9SP5NWI="
     ];
 
-    extraOptions = ''
-      gc-keep-outputs = true
-      gc-keep-derivations = true
-    '';
+    # extraOptions = ''
+    #   gc-keep-outputs = true
+    #   gc-keep-derivations = true
+    # '';
+
+    gc.automatic = true;
+    gc.options = "--delete-older-than 15d";
   };
 
   nixpkgs = {
     system = "x86_64-linux";
 
     config.allowUnfree = true;
-    config.virtualbox.enableExtensionPack = true;
+    # config.virtualbox.enableExtensionPack = true;
+
+    overlays = [
+      (import /data/works/dotfiles/nixpkgs/overlays/neovim.nix)
+      # (import ./overlays/neovim.nix)
+    ];
   };
 
   programs = {
@@ -117,43 +123,45 @@ with pkgs;
     gnome3.adwaita-icon-theme
 
     # system utils
-    parted
+    btrfs-progs
+    file
     inotify-tools
+    parted
+    psmisc
+    tree
   ];
 
-  # services = {
+  services = {
     # ipfs.enable = true;
     # openssh.enable = true;
     # openssh.permitRootLogin = "yes";
-  # };
 
-  services.avahi = {
-    enable = true;
-    nssmdns = true;
+    avahi = {
+      enable = true;
+      nssmdns = true;
+    };
+
+    printing = {
+      enable = true;
+      # drivers = [ samsung-unified-linux-driver ];
+    };
+
+    dbus.packages = [ gnome3.dconf ];
+
+    udisks2.enable = true;
+
+    gnome3 = {
+      sushi.enable = true;
+      gvfs.enable = true;
+      gnome-disks.enable = true;
+    };
+
+    journald.extraConfig = ''
+      SystemMaxUse=50M
+      MaxRetentionSec=10day
+      '';
+
   };
-
-  services.printing = {
-    enable = true;
-    # drivers = [ samsung-unified-linux-driver ];
-  };
-
-  services.dbus.packages = [ gnome3.dconf ];
-
-  services.udisks2.enable = true;
-
-  services.gnome3 = {
-    sushi.enable = true;
-    gvfs.enable = true;
-    gnome-disks.enable = true;
-  };
-
-  services.journald.extraConfig = ''
-    SystemMaxUse=50M
-    MaxRetentionSec=10day
-    '';
-
-  # sound via ALSA
-  # sound.enable = true;
 
   # sound via PulseAudio
   hardware.pulseaudio = {
@@ -177,17 +185,11 @@ with pkgs;
 
         videoDrivers = [ "nvidiaLegacy340" ];
 
-        # xrandrHeads = [
-        #   { output = "DVI-I-1";}
-        #   { output = "DVI-I-2";}
-        # ];
-
         windowManager.openbox.enable = true;
 
         windowManager.xmonad = {
           enable = true;
           enableContribAndExtras = true;
-
         };
 
         windowManager.default = "xmonad";
@@ -196,8 +198,6 @@ with pkgs;
           enable = true;
           autoNumlock = true;
         };
-
-        # desktopManager.lxqt.enable = true;
     };
 
   virtualisation.docker = {
@@ -215,46 +215,38 @@ with pkgs;
       extraGroups = ["audio" "wheel" "docker" "vboxusers"];
       packages = [
         ## terminal apps
-        btrfs-progs
-        file
-        gcc
         git
         gnumake
         htop
         neovim
         p7zip
-        psmisc
+        ranger
         tmux
-        tree
         unrar
         unzip
         wget
         xsel
-        # jre
 
         ## graphical apps
-        # firefox-devedition-bin
-        # gnucash26
+        # neovim-qt
         chromium
         ffmpegthumbnailer
         firefox
         gnucash
         keepassx2
-        # libreoffice-fresh
-        libreoffice-still
-        neovim-qt
+        # libreoffice
+        libreoffice-fresh
         scrot
         transmission_gtk
         vlc
 
+        # shared_mime_info
         gnome3.dconf-editor
         gnome3.eog
         gnome3.evince
         gnome3.file-roller
         gnome3.gnome-disk-utility
-        gnome3.gnome_control_center
         gnome3.nautilus
-        shared_mime_info
         shotwell
 
         ];
@@ -272,6 +264,5 @@ with pkgs;
   };
 
   system.stateVersion = "18.03";
-  # system.nixos.stateVersion = "18.03";
 
 }
