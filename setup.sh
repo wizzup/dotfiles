@@ -23,6 +23,7 @@ ln -sfv $DIR/_xmobarrc          ~/.xmobarrc
 ln -sfv $DIR/_xprofile          ~/.xprofile
 ln -sfv $DIR/_Xresources        ~/.Xresources
 ln -sfv $DIR/nixpkgs/config.nix ~/.config/nixpkgs/config.nix
+ln -sfv $DIR/nixpkgs/overlays   ~/.config/nixpkgs/overlays
 ln -sfv $DIR/nvim/ginit.vim     ~/.config/nvim/ginit.vim
 ln -sfv $DIR/nvim/init.vim      ~/.config/nvim/init.vim
 ln -sfv $DIR/termite/config     ~/.config/termite/config
