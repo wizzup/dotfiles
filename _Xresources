@@ -42,14 +42,8 @@ URxvt.depth:           32
 URxvt.fading:          30
 
 ! Fonts
-! URxvt*font:            xft:Monospace:style=Medium:bold:pixelsize=14:antialias=true:hinting=true:hintstyle=hintfull
-! URxvt*boldFont:        xft:Monospace:style=Medium:italic:pixelsize=14:antialias=true:hinting=true:hintstyle=hintfull
-! URxvt*font:            xft:DejaVu Sans Mono:style=Medium:bold:pixelsize=14:antialias=true:hinting=true:hintstyle=hintfull
-! URxvt*boldFont:        xft:DejaVu Sans Mono:style=Medium:italic:pixelsize=14:antialias=true:hinting=true:hintstyle=hintfull
-! URxvt*font:            xft:Fira Mono:style=Medium:bold:pixelsize=14:antialias=true:hinting=true:hintstyle=hintfull
-! URxvt*boldFont:        xft:Fira Mono:style=Medium:italic:pixelsize=14:antialias=true:hinting=true:hintstyle=hintfull
-URxvt*font:            xft:Hasklig:style=Medium:bold:pixelsize=14:antialias=true:hinting=true:hintstyle=hintfull
-URxvt*boldFont:        xft:Hasklig:style=Medium:italic:pixelsize=14:antialias=true:hinting=true:hintstyle=hintfull
+URxvt*font:            xft:Fira Mono:style=Medium:bold:pixelsize=14:antialias=true:hinting=true:hintstyle=hintfull
+URxvt*boldFont:        xft:Fira Mono:style=Medium:italic:pixelsize=14:antialias=true:hinting=true:hintstyle=hintfull
 
 ! Scrollbar
 URxvt.scrollStyle:     rxvt
