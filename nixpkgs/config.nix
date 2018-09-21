@@ -32,7 +32,11 @@ in
           jedi flake8 pylint
         ]))
 
-        mypy
+        python-language-server
+        # mypy
+
+        # need for readline's bind
+        bashInteractive
       ];
     };
 
@@ -56,6 +60,9 @@ in
         hlint
         brittany
         doctest
+
+        # need for readline's bind
+        bashInteractive
       ];
     };
 

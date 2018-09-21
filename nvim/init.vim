@@ -1,92 +1,136 @@
-" init.vim (for nvim) by Wisut Hantanong
+" init.vim (for neovim) by Wisut Hantanong
 
-set nocompatible   " Disable vi-compatibility to get VIM full power
+" Disable vi-compatibility to get VIM full power
+set nocompatible
 
-"" Plugins using junegunn/vim-plug
-" =============================================================================
+" Plugins using junegunn/vim-plug
+" ==============================================================================
+
 call plug#begin()
 
+    "" code commenting
+    " --------------------------------------------------------------------------
+    Plug 'tomtom/tcomment_vim'
+
     "" fancy status line
+    " --------------------------------------------------------------------------
     Plug 'vim-airline/vim-airline'
 
     "" color scheme
+    " --------------------------------------------------------------------------
     Plug 'morhetz/gruvbox'
 
-    "" linter
-    Plug 'w0rp/ale'
-
-    "" text alignment
-    Plug 'junegunn/vim-easy-align'
-
-    "" code commenting
-    Plug 'tomtom/tcomment_vim'
-
-    "" tmux pane / vim split using same key combination
-    Plug 'christoomey/vim-tmux-navigator'
-
-    "" NerdTree
-    Plug 'scrooloose/nerdtree'
-
     "" fuzzy finder
+    " --------------------------------------------------------------------------
     Plug 'ctrlpvim/ctrlp.vim'
 
-    "" tpope plugins
-    Plug 'tpope/vim-surround'
-    Plug 'tpope/vim-fugitive'
+    "" tmux pane / vim split using same key combination
+    " --------------------------------------------------------------------------
+    Plug 'christoomey/vim-tmux-navigator'
+
+    " nerdtree
+    " -----------------------------------------------------------------------------
+    Plug 'scrooloose/nerdtree'
+
+    "" text alignment
+    " -----------------------------------------------------------------------------
+    Plug 'junegunn/vim-easy-align'
+
+    "" GhostText server
+    " -----------------------------------------------------------------------------
+    Plug 'wizzup/vim-ghost', {'branch': 'nix'}
 
     "" editorconfig
+    " -----------------------------------------------------------------------------
     Plug 'editorconfig/editorconfig-vim'
 
-    "" Tags
-    Plug 'majutsushi/tagbar'
+    "" autocompletion engine
+    " --------------------------------------------------------------------------
+    Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
-    " "" GhostText server
-    Plug 'wizzup/vim-ghost', {'branch': 'nix', 'do': ':GhostInstall'}
-
-    " -------------------------------------------------------------------------
-    "" file-type specific plugins
-    " -------------------------------------------------------------------------
-
-    "" Nix
-    " -------------------------------------------------------------------------
-    Plug 'LnL7/vim-nix'
-    " -------------------------------------------------------------------------
-
-    "" haskell
-    " -------------------------------------------------------------------------
-    " syntax highlight for haskell
-    Plug 'neovimhaskell/haskell-vim', { 'for': 'haskell' }
-
-    " ghcid (disable because annoying screen refreshing)
-    Plug 'ndmitchell/ghcid', { 'rtp': 'plugins/nvim' }
-
-    " haskellwiki syntax
-    Plug 'wizzup/haskellwiki.vim', { 'for': 'haskellwiki' }
-    " -------------------------------------------------------------------------
+    "" lsp client
+    " --------------------------------------------------------------------------
+    Plug 'autozimu/LanguageClient-neovim', {'branch': 'next', 'do': './install.sh'}
 
 call plug#end()
-" =============================================================================
+" ==============================================================================
 
-"" Plugins settings
-" =============================================================================
-let mapleader=","           " comma is easier to get than back-slash
+" plugin settings
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-"" Airline
+"" vim-airline
+" --------------------------------------------------------------------------
 let g:airline_powerline_fonts = 1
 
 if !exists('g:airline_symbols')
     let g:airline_symbols = {}
 endif
 
-let g:airline_left_alt_sep = ''
-let g:airline_left_sep = ''
-let g:airline_right_alt_sep = ''
-let g:airline_right_sep = ''
-let g:airline_symbols.branch = ''
-let g:airline_symbols.linenr = ''
-let g:airline_symbols.paste = 'Þ'
-let g:airline_symbols.readonly = ''
+" unicode symbols
+let g:airline_left_sep = '»'
+let g:airline_left_sep = '▶'
+let g:airline_right_sep = '«'
+let g:airline_right_sep = '◀'
+let g:airline_symbols.paste = 'ρ'
 let g:airline_symbols.whitespace = 'Ξ'
+let g:airline_symbols.branch = ''
+let g:airline_symbols.readonly = ''
+let g:airline_symbols.linenr = ''
+
+" nerdtree
+" -----------------------------------------------------------------------------
+nmap <Leader>nt :NERDTreeToggle<CR>
+
+"" vim-EasyAlign
+" -----------------------------------------------------------------------------
+" Start interactive EasyAlign in visual mode (e.g. vipga)
+xmap ga <Plug>(EasyAlign)
+" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+nmap ga <Plug>(EasyAlign)
+
+"" deoplete
+" --------------------------------------------------------------------------
+let g:deoplete#enable_at_startup = 1
+call deoplete#custom#source('_', 'matchers', ['matcher_full_fuzzy'])
+call deoplete#custom#option({
+            \'ignore_case': v:true,
+            \'complete_method':"omnifunc"
+            \})
+
+"" LanguageClient-neovim
+" --------------------------------------------------------------------------
+let g:LanguageClient_serverCommands = {
+    \ 'haskell': ['hie-wrapper', '--lsp'],
+    \ 'python': ['pyls'],
+\ }
+set completefunc=LanguageClient#complete
+set formatexpr=LanguageClient#textDocument_rangeFormatting_sync()
+nnoremap <F5> :call LanguageClient_contextMenu()<CR>
+nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
+nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
+nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
+
+" global settings
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" Line number, window viewing and formatting
+set number                  " show line number
+set fo-=t                   " don't autowrap while typing
+set showmatch               " show matching brackets
+set wildmode=list:longest   " make commmand completiton work like in shell
+set scrolloff=4             " see more context around cursor
+set lazyredraw              " don't redraw while executing macros
+set showcmd                 " show visual-mode line selection count
+set foldenable              " enalbe folding
+set foldmethod=syntax       " fold by syntax
+set foldcolumn=3            " display fold indicator
+set visualbell              " turn the 'beep' sound off
+set scrolloff=2             " cursor scroll offset
+" set nowrap                  " no auto wrap text line
+" set colorcolumn=80          " highlight col 80
+
+"" keys mappings
+let mapleader=","           " comma is easier to get than back-slash
 
 "" tmux
 " -----------------------------------------------------------------------------
@@ -95,100 +139,6 @@ let g:airline_symbols.whitespace = 'Ξ'
 "" ex: 'h' send as h
 "" ex: '\'h\'' send as 'h'
 nnoremap <leader>sr y$:!tmux send-keys -t Right '<C-R>"' C-m <CR><CR>
-" -----------------------------------------------------------------------------
-
-"" vim-easy-align
-" -----------------------------------------------------------------------------
-" Start interactive EasyAlign in visual mode (e.g. vipga)
-xmap ga <Plug>(EasyAlign)
-" Start interactive EasyAlign for a motion/text object (e.g. gaip)
-nmap ga <Plug>(EasyAlign)
-" -----------------------------------------------------------------------------
-
-""" ale
-" -----------------------------------------------------------------------------
-"" disable history log because it is too long
-" let g:ale_history_log_output = 0
-"" enable omnifunc completion
-let g:ale_completion_enabled = 1
-let g:ale_completion_max_suggestions = 50
-"" define linters
-let g:ale_linters = {'haskell':['hie']}
-"" defined fixers
-let g:ale_fixers = {'haskell':['brittany']}
-"" only use the specify linters, don't try to use others
-let g:ale_linters_explicit = 1
-" -----------------------------------------------------------------------------
-
-" nerdtree
-" -----------------------------------------------------------------------------
-nmap <Leader>nt :NERDTreeToggle<CR>
-" -----------------------------------------------------------------------------
-
-" tagbar
-" -----------------------------------------------------------------------------
-nmap <Leader>tb :TagbarToggle<CR>
-let g:tagbar_left = 1
-let g:tagbar_type_haskell = {
-    \ 'ctagsbin'  : 'hasktags',
-    \ 'ctagsargs' : '-x -c -o-',
-    \ 'kinds'     : [
-        \  'm:modules:0:1',
-        \  'd:data: 0:1',
-        \  'd_gadt: data gadt:0:1',
-        \  't:type names:0:1',
-        \  'nt:new types:0:1',
-        \  'c:classes:0:1',
-        \  'cons:constructors:1:1',
-        \  'c_gadt:constructor gadt:1:1',
-        \  'c_a:constructor accessors:1:1',
-        \  'ft:function types:1:1',
-        \  'fi:function implementations:0:1',
-        \  'o:others:0:1'
-    \ ],
-    \ 'sro'        : '.',
-    \ 'kind2scope' : {
-        \ 'm' : 'module',
-        \ 'c' : 'class',
-        \ 'd' : 'data',
-        \ 't' : 'type'
-    \ },
-    \ 'scope2kind' : {
-        \ 'module' : 'm',
-        \ 'class'  : 'c',
-        \ 'data'   : 'd',
-        \ 'type'   : 't'
-    \ }
-    \ }
-" -----------------------------------------------------------------------------
-
-" haskell-vim
-" -----------------------------------------------------------------------------
-" to disable smart indentation, (use syntax highlighting only)
-" let g:haskell_indent_disable = 1
-" -----------------------------------------------------------------------------
-
-" global settings
-" =============================================================================
-"
-" Line number, window viewing and formatting
-set number                 " show line number
-set fo-=t                  " don't autowrap while typing
-set showmatch              " show matching brackets
-set wildmode=list:longest  " make commmand completiton work like in shell
-set scrolloff=4            " see more context around cursor
-set lazyredraw             " don't redraw while executing macros
-set showcmd                " show visual-mode line selection count
-set foldenable             " enalbe folding
-set foldmethod=syntax      " fold by syntax
-set foldcolumn=3           " display fold indicator
-set visualbell             " turn the 'beep' sound off
-set scrolloff=2            " cursor scroll offset
-set nowrap                 " no auto wrap text line
-set textwidth=80           " default textwidth to 80
-set colorcolumn=+1         " highlight col textwidth + 1 (81)
-
-"" keys mappings
 " -----------------------------------------------------------------------------
 
 "" paste mode toggle
@@ -240,10 +190,6 @@ set nowrapscan      " don't automatic to to beginning of file
 " clear search lighlight
 nmap <Leader><Space> :noh<CR>
 
-"" folding
-" fold toggle using space
-nmap <Space> za
-
 " I don't want to clean backup file so don't create it.
 set nobackup
 set nowritebackup
@@ -251,11 +197,11 @@ set noswapfile
 
 " omnicompletion default to syntax
 set omnifunc=syntaxcomplete#Complete
-set completeopt=longest,menuone
+" set completeopt=longest,menuone
 
 "" Colors
 set bg=dark
-set t_Co=256         " force vim to use 256 colors
+" set t_Co=256                        " force vim to use 256 colors
 
 colorscheme gruvbox
 
@@ -263,15 +209,33 @@ colorscheme gruvbox
 "" AUTO COMMAND
 "" =============================================================================
 "" Put these in an autocmd group, so that we can delete them easily.
-augroup myAuFiletype
-    autocmd!
-
-    " haskel source file,  write and run
-    autocmd FileType haskell nmap <buffer> <Leader>r  :w<CR>:!runhaskell %<CR>
-    autocmd FileType haskell nmap <buffer> <Leader>ri :w<CR>:!runhaskell % < input<CR>
-    autocmd FileType haskell nmap <buffer> <Leader>rs :w<CR>:!stack exec runhaskell %<CR>
-    autocmd FileType haskell nmap <buffer> <Leader>rsi :w<CR>:!stack exec runhaskell % < input<CR>
-augroup END
+" augroup myAuFiletype
+"     autocmd!
+"
+"     " haskell
+"     "
+"     " autocmd BufWinEnter *.hs setlocal foldexpr=SimpylFold(v:lnum) foldmethod=expr
+"     " autocmd BufWinLeave *.hs setlocal foldexpr< foldmethod<
+"
+"     " python
+"     "
+"     " autocmd FileType python nmap <buffer> <Leader>w :w<CR>:Neomake<CR>
+"     autocmd FileType python nmap <buffer> <Leader>r :w<CR>:!python %<CR>
+"     autocmd FileType python nmap <buffer> <Leader>ri :w<CR>:!python % < input<CR>
+"
+"     " For all text files set 'textwidth' to 78 characters.
+"     " autocmd FileType haskell setlocal textwidth=78
+"     " autocmd FileType python  setlocal textwidth=78
+"     " autocmd FileType text    setlocal textwidth=78
+"
+"     " haskel source file
+"     " write and run
+"     " autocmd FileType haskell nmap <buffer> <Leader>r :w<CR>:!runhaskell %<CR>
+"     " autocmd FileType haskell nmap <buffer> <Leader>ri :w<CR>:!runhaskell % < input<CR>
+"     " autocmd FileType haskell nmap <buffer> <Leader>r :w<CR>:!stack exec runhaskell %<CR>
+"     " autocmd FileType haskell nmap <buffer> <Leader>ri :w<CR>:!stack exec runhaskell % < input<CR>
+"
+" augroup END
 
 augroup myAuBuffer
     autocmd!
@@ -287,8 +251,9 @@ augroup myAuBuffer
 
 augroup END
 
+"" =============================================================================
 "" Misc and custom functions
-" =============================================================================
+"" =============================================================================
 " Convenient command to see the difference between the current buffer and the
 " file it was loaded from, thus the changes you made.
 " Only define it when not defined already.
