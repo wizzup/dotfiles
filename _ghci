@@ -2,11 +2,17 @@
 -- ~/.ghci
 -- GHCi configuration file
 
+-- warning about lots of useful errors (not really ALL as the name suggested)
+:set -Wall
+
+-- but not too many warning
+:set -Wno-type-defaults
+
 -- my editor
 :set editor nvim
 
--- OverloadedStrings is often useful.
-:set -XOverloadedStrings
+-- OverloadedStrings is often useful. but sometimes introduce ambiguous problems.
+-- :set -XOverloadedStrings
 
 -- so does TypeApplication.
 :set -XTypeApplications
@@ -30,6 +36,11 @@
 -- Make the prompt a little more colorful.
 :set prompt "\ESC[1;34m\STX%s\n\ESC[0;34m\STXλ> \ESC[m\STX"
 
--- Hoogle integration (doesn't work on data61 fp-course)
+-- Hoogle integration -- doesn't work on data61 fp-course
 -- :def hoogle \x -> return $ ":!hoogle \"" ++ x ++ "\""
 -- :def doc \x -> return $ ":!hoogle --info \"" ++ x ++ "\""
+
+-- pretty print
+-- :set -package pretty-simple
+-- import Text.Pretty.Simple (pPrint)
+-- :set -interactive-print pPrint

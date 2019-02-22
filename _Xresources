@@ -23,27 +23,60 @@
 *.color15:    #E6E6E6
 
 ! Xft settings ---------------------------------------------------------------
-Xft.dpi:        96
-Xft.antialias:  true
-Xft.rgba:       rgb
-Xft.hinting:    true
-Xft.hintstyle:  hintslight
+Xft.antialias: 1
+Xft.autohint: 1
+Xft.dpi: 96
+Xft.hinting: 1
+Xft.hintstyle: hintfull
+Xft.lcdfilter: lcddefault
+Xft.rgba: vbgr
+Xft.minspace: 0
 
 ! Xcursor --------------------------------------------------------------------
 Xcursor.theme: Vanilla-DMZ-AA
 Xcursor.size:  22
 
 !-------------------------------------------------------------------------------
+! fonts settings
+! https://github.com/ajkaanbal/dotfiles/blob/master/Xresources
+!-------------------------------------------------------------------------------
+
+#define fonts xft:Fira Code:pixelsize=14,\
+              xft:FreeSerif:pixelsize:14,\
+              xft:Noto Sans:pixelsize:14,\
+              xft:Noto Sans Thai:pixelsize:14,\
+              xft:Noto Emoji:pixelsize:14
+
+#define fontsB xft:Fira Code:bold:pixelsize=14,\
+               xft:FreeSerif:pixelsize:14,\
+               xft:Noto Sans:bold:pixelsize:14,\
+               xft:Noto Sans Thai:bold:pixelsize:14,\
+               xft:Noto Emoji:pixelsize:14
+
+#define fontsI xft:Fira Code:italic:pixelsize=14,\
+               xft:FreeSerif:pixelsize:14,\
+               xft:Noto Sans:italic:pixelsize:14,\
+               xft:Noto Sans Thai:italic:pixelsize:14,\
+               xft:Noto Emoji:pixelsize:14
+
+! #define fonts xft:Source Code Pro:pixelsize:10,\
+!               xft:Noto Sans Thai:pixelsize:12,\
+!               xft:Noto Emoji:pixelsize:12
+
+!-------------------------------------------------------------------------------
 ! urxvt settings
 ! to list all configurable options: urxvt --help 2>&1
 !-------------------------------------------------------------------------------
 
-URxvt.depth:           32
-URxvt.fading:          30
+URxvt.depth:  32
+URxvt.fading: 30
 
 ! Fonts
-URxvt*font:            xft:DejaVu Sans Mono for Powerline:style=Medium:bold:pixelsize=14:antialias=true:hinting=true:hintstyle=hintfull
-URxvt*boldFont:        xft:DejaVu Sans Mono for Powerline:style=Medium:italic:pixelsize=14:antialias=true:hinting=true:hintstyle=hintfull
+URxvt.font: fonts
+URxvt.boldFont: fontsB
+URxvt.italicFont: fontsI
+URxvt.boldItalicFont: fonts
+URxvt.letterSpace: 0
 
 ! Scrollbar
 URxvt.scrollStyle:     rxvt

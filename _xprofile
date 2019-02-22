@@ -1,30 +1,30 @@
 # vim: ft=config cms=#%s
 #
-# .xprofile : for SDDM
+# .xprofile : for SDDM: when login
 
 # grab customized resource (console color and fonts)
 [[ -e ~/.Xresources ]] && xrdb -merge ~/.Xresources &
 
-# dbus notifiacaion
+# dbus notifiacaion using dunst
 dunst -config .dunstrc &
 
-# set the cursor as pointer, otherwise X will appear as cursor
+# set the cursor as pointer, otherwise symbol `X` will appear as cursor
 xsetroot -cursor_name left_ptr &
 
 # desktop wallpaper
 feh --bg-center --no-xinerama .walpaper.jpg &
 
-# pluse audio system tray
-# pasystray &
-
-# re-adjust screen resolution
-# xrandr --output VGA-0 --auto --primary --output DVI-I-1 --auto --right-of VGA-0
-
-# keyboard options
-# setxkbmap -layout "us, th" -option 'grp:lalt_lshift_toggle,caps:swapescape' &
-
 # system tray
 # trayer --edge top --align right --SetDockType true --SetPartialStrut true --expand true --widthtype request --transparent true --alpha 255 --height 12 > .trayer.log &
 
-## start clipboard manager without icon
-#parcellite &
+# pluse audio system tray
+# pasystray &
+
+# start clipboard manager without icon
+# parcellite &
+
+# re-adjust screen resolution (no longer using dual-head)
+# xrandr --output VGA-0 --auto --primary --output DVI-I-1 --auto --right-of VGA-0
+
+# keyboard options (move to X configuration in /etc/nixos/configuration.nix)
+# setxkbmap -layout "us, th" -option 'grp:lalt_lshift_toggle,caps:swapescape' &

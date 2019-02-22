@@ -23,6 +23,7 @@ Config { font = "xft:DejaVu Sans Mono:pixelsize=14"
        , commands = [ Run Network "enp0s7" [] 10
                     , Run MultiCpu ["-t", "C.[<autototal>]%"] 10
                     , Run Memory ["-t","M.<usedratio>%"] 10
+                    , Run Swap ["-t", "S.<used>"] 10
                     , Run Com "uname" ["-r"] "" 36000
                     , Run Date "%a %b %_d %H:%M:%S" "date" 10
                     , Run StdinReader
@@ -31,5 +32,5 @@ Config { font = "xft:DejaVu Sans Mono:pixelsize=14"
                     ]
        , sepChar = "%"
        , alignSep = "}{"
-       , template = "%StdinReader%}{| %multicpu% %cputemp% | G.%gpucoretemp%C | %memory% | %enp0s7% | <fc=#ee9a00>%date%</fc>| %uname%"
+       , template = "%StdinReader%}{| %multicpu% %cputemp% | G.%gpucoretemp%C | %swap% %memory% | %enp0s7% | <fc=#ee9a00>%date%</fc>| %uname%"
        }

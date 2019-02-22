@@ -1,20 +1,25 @@
--- ~/.xmonad/xmonad.hs
--- xmonad config file.
---
+module Main where
+
 import XMonad
 import XMonad.Hooks.DynamicLog
+-- import XMonad.Hooks.EwmhDesktops (ewmh)
 import XMonad.Hooks.ManageDocks
-import XMonad.Layout.Simplest
-import XMonad.Layout.Tabbed
-import XMonad.Layout.LayoutModifier
+import XMonad.Layout.Accordion
 import XMonad.Layout.Decoration
+import XMonad.Layout.NoBorders
+import XMonad.Layout.OneBig
 import qualified XMonad.StackSet as W
+
 import qualified Data.Map        as M
+
+-- import System.Taffybar.Support.PagerHints (pagerHints)
+
 import System.Exit
 
 -- The preferred terminal program.
 myTerminal :: String
-myTerminal = "urxvt"
+myTerminal = "alacritty"
+-- myTerminal = "urxvt"
 -- myTerminal = "termite"
 
 -- Width of the window border in pixels.
@@ -26,22 +31,6 @@ myBorderWidth = 1
 --
 myModMask :: KeyMask
 myModMask = mod4Mask
-
--- The mask for the numlock key. Numlock status is "masked" from the
--- current modifier status, so the keybindings will work with numlock on or
--- off. You may need to change this on some systems.
---
--- You can find the numlock modifier by running "xmodmap" and looking for a
--- modifier with Num_Lock bound to it:
---
--- > $ xmodmap | grep Num
--- > mod2        Num_Lock (0x4d)
---
--- Set numlockMask = 0 if you don't have a numlock key, or want to treat
--- numlock status separately.
---
--- myNumlockMask :: KeyMask
--- myNumlockMask   = mod2Mask
 
 -- The default number of workspaces (virtual screens) and their names.
 --
@@ -176,34 +165,12 @@ myMouseBindings XConfig {XMonad.modMask = modm} = M.fromList
 -- The available layouts.  Note that each layout is separated by |||,
 -- which denotes layout choice.
 --
--- myLayout = tiled ||| Mirror tiled ||| Full
--- myLayout = tiled ||| Full
---   where
---      -- default tiling algorithm partitions the screen into two panes
---      tiled   = Tall nmaster delta ratio
---
---      -- The default number of windows in the master pane
---      nmaster = 1
---
---      -- Default proportion of screen occupied by master pane
---      ratio   = 2/3
---
---      -- Percent of screen to increment by when resizing panes
---      delta   = 3/100
-
--- myLayout = avoidStruts (
---             Tall 1 (3/100) (1/2) |||
---             Mirror (Tall 1 (3/100) (1/2)) |||
---             tabbed shrinkText tabConfig |||
---             Full |||
---             spiral (6/7)) |||
---             noBorders (fullscreenFull Full)
-
-myLayout :: ModifiedLayout AvoidStruts (Choose (ModifiedLayout (Decoration TabbedDecoration DefaultShrinker) Simplest) (Choose Tall Full)) Window
+myLayout :: ModifiedLayout AvoidStruts (Choose Tall (Choose (ModifiedLayout WithBorder Full) Accordion)) Window
 myLayout = avoidStruts (
-            tabbed shrinkText tabConfig |||
             Tall 1 (3/100) (1/2) |||
-            Full )
+            noBorders Full |||
+            Accordion
+            )
 
 -- Colors for text and backgrounds of each tab when in "Tabbed" layout.
 -- tabConfig = defaultTheme {
@@ -258,15 +225,22 @@ myLogHook = dynamicLog
 main :: IO ()
 main = xmonad =<< statusBar myBar myPP toggleStrutsKey defaults
 
+-- main = do
+--   c <- statusBar myBar myPP toggleStrutsKey defaults
+--   xmonad
+--      $ docks
+--      $ ewmh
+--      $ pagerHints c
+
 -- Command to launch the bar.
 myBar :: String
-myBar = "xmobar"
 -- myBar = "taffybar"
+myBar = "xmobar"
 
 -- Custom PP, configure it as you like. It determines what is being written to the bar.
 myPP :: PP
+-- myPP = def
 myPP = xmobarPP
--- myPP = defaultPP
 
 -- Key binding to toggle the gap for the bar.
 toggleStrutsKey :: XConfig t -> (KeyMask, KeySym)
@@ -276,13 +250,9 @@ toggleStrutsKey XConfig {XMonad.modMask = modm} = (modm, xK_b)
 -- fields in the default config. Any you don't override, will
 -- use the defaults defined in xmonad/XMonad/Config.hs
 --
--- No need to modify this.
---
--- defaults = defaultConfig {
-defaults :: XConfig (ModifiedLayout AvoidStruts (Choose (ModifiedLayout (Decoration TabbedDecoration DefaultShrinker) Simplest) (Choose Tall Full)))
+defaults :: XConfig (ModifiedLayout AvoidStruts (Choose Tall (Choose (ModifiedLayout WithBorder Full) Accordion)))
 defaults = def {
       -- simple stuff
-       -- numlockMask        = myNumlockMask,
         terminal           = myTerminal,
         focusFollowsMouse  = myFocusFollowsMouse,
         borderWidth        = myBorderWidth,
@@ -296,8 +266,8 @@ defaults = def {
         mouseBindings      = myMouseBindings,
 
       -- hooks, layouts
-        -- manageHook         = myManageHook,
-        -- startupHook        = myStartupHook,
         layoutHook         = myLayout,
         logHook            = myLogHook
+        -- manageHook         = myManageHook,
+        -- startupHook        = myStartupHook,
     }

@@ -3,6 +3,9 @@
 " Disable vi-compatibility to get VIM full power
 set nocompatible
 
+"" keys mappings
+let mapleader=","           " comma is easier to get than back-slash
+
 " Plugins using junegunn/vim-plug
 " ==============================================================================
 
@@ -12,9 +15,17 @@ call plug#begin()
     " --------------------------------------------------------------------------
     Plug 'tomtom/tcomment_vim'
 
+    "" editor configrations
+    " --------------------------------------------------------------------------
+    Plug 'editorconfig/editorconfig-vim'
+
     "" fancy status line
     " --------------------------------------------------------------------------
     Plug 'vim-airline/vim-airline'
+
+    "" fancy gutter column
+    " --------------------------------------------------------------------------
+    Plug 'airblade/vim-gitgutter'
 
     "" color scheme
     " --------------------------------------------------------------------------
@@ -38,7 +49,7 @@ call plug#begin()
 
     "" GhostText server
     " -----------------------------------------------------------------------------
-    Plug 'wizzup/vim-ghost', {'branch': 'nix'}
+    " Plug 'wizzup/vim-ghost', {'branch': 'nix'}
 
     "" editorconfig
     " -----------------------------------------------------------------------------
@@ -48,9 +59,25 @@ call plug#begin()
     " --------------------------------------------------------------------------
     Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
+    "" linter
+    " --------------------------------------------------------------------------
+    Plug 'w0rp/ale'
+
     "" lsp client
     " --------------------------------------------------------------------------
     Plug 'autozimu/LanguageClient-neovim', {'branch': 'next', 'do': './install.sh'}
+
+    "" Nix
+    " --------------------------------------------------------------------------
+    Plug 'LnL7/vim-nix', { 'for': 'nix' }
+
+    "" Python completion via deoplete using jedi
+    " --------------------------------------------------------------------------
+    Plug 'zchee/deoplete-jedi', { 'for': 'python' }
+
+    "" Rust completion via deoplete using rust racer
+    " --------------------------------------------------------------------------
+    " Plug 'sebastianmarkow/deoplete-rust', { 'for': 'rust' }
 
 call plug#end()
 " ==============================================================================
@@ -77,8 +104,19 @@ let g:airline_symbols.branch = ''
 let g:airline_symbols.readonly = ''
 let g:airline_symbols.linenr = ''
 
+" airline - ale integration
+let g:airline#extensions#ale#enabled = 1
+
+" ale
+" -----------------------------------------------------------------------------
+let g:ale_cursor_detail = 1
+let g:ale_linters = {'haskell': ['ghc', 'hlint', 'ghc-mod' ]}
+let g:ale_haskell_ghc_options = '-fno-code -v0 -Wall -Wcompat'
+
 " nerdtree
 " -----------------------------------------------------------------------------
+" show hidden files
+let NERDTreeShowHidden=1
 nmap <Leader>nt :NERDTreeToggle<CR>
 
 "" vim-EasyAlign
@@ -97,8 +135,16 @@ call deoplete#custom#option({
             \'complete_method':"omnifunc"
             \})
 
+"" deoplete-rust
+"
+" let g:deoplete#sources#rust#racer_binary = $RACER_BIN
+" let g:deoplete#sources#rust#rust_source_path = $RUST_SRC
+
+" --------------------------------------------------------------------------
 "" LanguageClient-neovim
 " --------------------------------------------------------------------------
+" use ale for diagnostic, LanguageClient is buggy
+let g:LanguageClient_diagnosticsEnable = 0
 let g:LanguageClient_serverCommands = {
     \ 'haskell': ['hie-wrapper', '--lsp'],
     \ 'python': ['pyls'],
@@ -114,23 +160,24 @@ nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " Line number, window viewing and formatting
-set number                  " show line number
 set fo-=t                   " don't autowrap while typing
-set showmatch               " show matching brackets
-set wildmode=list:longest   " make commmand completiton work like in shell
-set scrolloff=4             " see more context around cursor
-set lazyredraw              " don't redraw while executing macros
-set showcmd                 " show visual-mode line selection count
+set foldcolumn=3            " display fold indicator
 set foldenable              " enalbe folding
 set foldmethod=syntax       " fold by syntax
-set foldcolumn=3            " display fold indicator
+set lazyredraw              " don't redraw while executing macros
+set number                  " show line number
+set scrolloff=4             " see more context around cursor
+set showcmd                 " show visual-mode line selection count
+set showmatch               " show matching brackets
+set signcolumn=yes          " preserve space for sign (gutter)
 set visualbell              " turn the 'beep' sound off
-set scrolloff=2             " cursor scroll offset
-" set nowrap                  " no auto wrap text line
+set wildmode=longest:full   " wildchar (tap) completion for command window
+set wildmenu                " display all matching
+set wildignorecase          " match case insensitive filename
+set nowrap                  " no auto wrap text line
+set ignorecase
+set infercase
 " set colorcolumn=80          " highlight col 80
-
-"" keys mappings
-let mapleader=","           " comma is easier to get than back-slash
 
 "" tmux
 " -----------------------------------------------------------------------------
@@ -173,6 +220,7 @@ set smarttab        " work fluently with spaces as tab
 set shiftround      " round indent to multiple of shiftwidth
 set autoindent      " auto indent on next line insertion
 set smartindent     " adj indent dept to where it should be
+set nocindent       " c-style indent sometime annoying for non-c code
 
 " splitting behaviour
 set splitbelow
@@ -184,7 +232,6 @@ set incsearch       " use incremental search
 set ignorecase      " case insensitive search
 set smartcase       " use smartcase
 set path+=**        " recursive search (:find)
-set wildmenu        " display all matching
 set nowrapscan      " don't automatic to to beginning of file
 
 " clear search lighlight
@@ -197,7 +244,7 @@ set noswapfile
 
 " omnicompletion default to syntax
 set omnifunc=syntaxcomplete#Complete
-" set completeopt=longest,menuone
+set completeopt=longest,menuone
 
 "" Colors
 set bg=dark
@@ -209,33 +256,35 @@ colorscheme gruvbox
 "" AUTO COMMAND
 "" =============================================================================
 "" Put these in an autocmd group, so that we can delete them easily.
-" augroup myAuFiletype
-"     autocmd!
-"
-"     " haskell
-"     "
-"     " autocmd BufWinEnter *.hs setlocal foldexpr=SimpylFold(v:lnum) foldmethod=expr
-"     " autocmd BufWinLeave *.hs setlocal foldexpr< foldmethod<
-"
-"     " python
-"     "
-"     " autocmd FileType python nmap <buffer> <Leader>w :w<CR>:Neomake<CR>
-"     autocmd FileType python nmap <buffer> <Leader>r :w<CR>:!python %<CR>
-"     autocmd FileType python nmap <buffer> <Leader>ri :w<CR>:!python % < input<CR>
-"
-"     " For all text files set 'textwidth' to 78 characters.
-"     " autocmd FileType haskell setlocal textwidth=78
-"     " autocmd FileType python  setlocal textwidth=78
-"     " autocmd FileType text    setlocal textwidth=78
-"
-"     " haskel source file
-"     " write and run
-"     " autocmd FileType haskell nmap <buffer> <Leader>r :w<CR>:!runhaskell %<CR>
-"     " autocmd FileType haskell nmap <buffer> <Leader>ri :w<CR>:!runhaskell % < input<CR>
-"     " autocmd FileType haskell nmap <buffer> <Leader>r :w<CR>:!stack exec runhaskell %<CR>
-"     " autocmd FileType haskell nmap <buffer> <Leader>ri :w<CR>:!stack exec runhaskell % < input<CR>
-"
-" augroup END
+augroup myAuFiletype
+    autocmd!
+
+    " haskell
+    "
+    " autocmd BufWinEnter *.hs setlocal foldexpr=SimpylFold(v:lnum) foldmethod=expr
+    " autocmd BufWinLeave *.hs setlocal foldexpr< foldmethod<
+
+    " python
+    "
+    " autocmd FileType python nmap <buffer> <Leader>w :w<CR>:Neomake<CR>
+    " autocmd FileType python nmap <buffer> <Leader>r :w<CR>:!python %<CR>
+    " autocmd FileType python nmap <buffer> <Leader>ri :w<CR>:!python % < input<CR>
+
+    " For all text files set 'textwidth' to 78 characters.
+    " autocmd FileType haskell setlocal textwidth=78
+    " autocmd FileType python  setlocal textwidth=78
+    " autocmd FileType text    setlocal textwidth=78
+
+    " haskel source file
+    " write buffer and run doctest
+    autocmd FileType haskell nmap <buffer> <Leader>dt :w<CR>:!doctest %<CR>
+    " write and run
+    " autocmd FileType haskell nmap <buffer> <Leader>r :w<CR>:!runhaskell %<CR>
+    " autocmd FileType haskell nmap <buffer> <Leader>ri :w<CR>:!runhaskell % < input<CR>
+    " autocmd FileType haskell nmap <buffer> <Leader>r :w<CR>:!stack exec runhaskell %<CR>
+    " autocmd FileType haskell nmap <buffer> <Leader>ri :w<CR>:!stack exec runhaskell % < input<CR>
+
+augroup END
 
 augroup myAuBuffer
     autocmd!

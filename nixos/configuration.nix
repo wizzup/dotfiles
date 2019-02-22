@@ -10,11 +10,6 @@ with pkgs;
       ./hardware-configuration.nix
     ];
 
-  zramSwap = {
-    enable = true;
-    numDevices = 2;
-  };
-
   networking = {
     useDHCP = false;
     hostName = "earth";
@@ -34,17 +29,26 @@ with pkgs;
   time.timeZone = "Asia/Bangkok";
 
   nix = {
-    maxJobs = lib.mkDefault 2;
+    maxJobs = 2;
+
     # useSandbox = true;
+
+    # default level is 0, valid values are 0 to 19
+    daemonNiceLevel = 10;
+
+    # default level is 0, valid values are 0 to 7
+    daemonIONiceLevel = 4;
 
     binaryCaches = [
       "https://cache.nixos.org"
       "https://hie-nix.cachix.org"
+      "https://wizzup.cachix.org"
       # "https://nixcache.reflex-frp.org"
     ];
 
     binaryCachePublicKeys = [
       "hie-nix.cachix.org-1:EjBSHzF6VmDnzqlldGXbi0RM3HdjfTU3yDRi9Pd0jTY="
+      "wizzup.cachix.org-1:FDHBjAYzhSSGmX3ZGIhgl3+uwNFblIOzjPTb0edaVOw="
       # "ryantrinkle.com-1:JJiAKaRv9mWgpVAz8dwewnZe0AzzEAzPkagE9SP5NWI="
     ];
 
@@ -65,7 +69,6 @@ with pkgs;
 
     overlays = [
       (import /data/works/dotfiles/nixpkgs/overlays/neovim.nix)
-      # (import ./overlays/neovim.nix)
     ];
   };
 
@@ -79,35 +82,34 @@ with pkgs;
     enableDefaultFonts = true;
 
     fonts = [
-      dejavu_fonts
+      # nerdfonts
       fira-code
-      google-fonts
-      hasklig
-      noto-fonts
-      noto-fonts-cjk
       source-code-pro
-      terminus_font
-      terminus_font_ttf
-      twemoji-color-font
+      noto-fonts
+      noto-fonts-extra
+      noto-fonts-emoji
+      noto-fonts-cjk
     ];
   };
 
   environment.systemPackages = [
 
     ## xmonad utils
+    # taffybar
+    alacritty
+    alsaUtils
     dmenu
+    dunst
     dzen2
+    feh
     gmrun
     lm_sensors
-    termite
-    rxvt_unicode-with-plugins
-    trayer
     pasystray
     pavucontrol
-    dunst
-    feh
-    # taffybar
-    alsaUtils
+    rxvt_unicode-with-plugins
+    termite
+    trayer
+    xterm
 
     ## haskell packages
     haskellPackages.xmobar
@@ -129,26 +131,30 @@ with pkgs;
     parted
     psmisc
     tree
+    usbutils
   ];
 
   services = {
     # ipfs.enable = true;
-    # openssh.enable = true;
-    # openssh.permitRootLogin = "yes";
 
-    avahi = {
-      enable = true;
-      nssmdns = true;
-    };
+    # openssh = {
+    #   enable = true;
+    #   permitRootLogin = "yes";
+    # };
 
-    printing = {
-      enable = true;
-      # drivers = [ samsung-unified-linux-driver ];
-    };
+    # avahi = {
+    #   enable = true;
+    #   nssmdns = true;
+    # };
+
+    # printing = {
+    #   enable = true;
+    #   # drivers = [ samsung-unified-linux-driver ];
+    # };
 
     dbus.packages = [ gnome3.dconf ];
 
-    udisks2.enable = true;
+    # udisks2.enable = true;
 
     gnome3 = {
       sushi.enable = true;
@@ -163,49 +169,59 @@ with pkgs;
 
   };
 
-  # sound via PulseAudio
-  hardware.pulseaudio = {
-    enable = true;
-    support32Bit = true;
+  zramSwap.enable = true;
 
-    # pulseaudioLight does *not* have module-x11-publish.so
-    # https://github.com/NixOS/nixpkgs/issues/11970
-    package = pkgs.pulseaudioFull;
-  };
+  hardware = {
+    # sound via PulseAudio
+    pulseaudio = {
+      enable = true;
+      support32Bit = true;
 
-  hardware.opengl = {
-    driSupport = true;
-    driSupport32Bit = true;
+      # pulseaudioLight does *not* have module-x11-publish.so
+      # https://github.com/NixOS/nixpkgs/issues/11970
+      package = pulseaudioFull;
+    };
+
+    opengl = {
+      driSupport = true;
+      driSupport32Bit = true;
+    };
   };
 
   services.xserver = {
-        enable = true;
-        layout = "us, th";
-        xkbOptions = "grp:lalt_lshift_toggle, caps:swapescape";
+    enable = true;
+    layout = "us, th";
+    xkbOptions = "grp:lalt_lshift_toggle, caps:swapescape";
 
-        videoDrivers = [ "nvidiaLegacy340" ];
+    videoDrivers = [ "nvidiaLegacy340" ];
+    # videoDrivers = [ "nouveau" ];
 
-        windowManager.openbox.enable = true;
+    windowManager.openbox.enable = true;
 
-        windowManager.xmonad = {
-          enable = true;
-          enableContribAndExtras = true;
-        };
-
-        windowManager.default = "xmonad";
-
-        displayManager.sddm = {
-          enable = true;
-          autoNumlock = true;
-        };
+    windowManager.xmonad = {
+      enable = true;
+      enableContribAndExtras = true;
+      extraPackages = (p: with p; [
+        # taffybar
+      ]);
     };
 
-  virtualisation.docker = {
-    enable = true;
-    storageDriver = "btrfs";
-  };
+    windowManager.default = "xmonad";
 
-  # virtualisation.virtualbox.host.enable = true;
+    displayManager.sddm = {
+      enable = true;
+      autoNumlock = true;
+    };
+    };
+
+  # virtualisation = {
+  #   docker = {
+  #     enable = true;
+  #     storageDriver = "btrfs";
+  #   };
+  #
+  #   virtualbox.host.enable = true;
+  # };
 
   users.extraUsers = {
     wizzup = {
@@ -226,16 +242,27 @@ with pkgs;
         unzip
         wget
         xsel
+        haskellPackages.steeloverseer
+        nodePackages.livedown
+
+        ## TODO: move to custom nvim override
+        ## need for nvim's coc
+        yarn
+        nodejs
+
+        ## need for ranger preview
+        ffmpegthumbnailer
+        poppler_utils
+        w3m
 
         ## graphical apps
         # neovim-qt
         chromium
-        ffmpegthumbnailer
         firefox
         gnucash
         keepassx2
-        # libreoffice
-        libreoffice-fresh
+        libreoffice
+        # libreoffice-fresh
         scrot
         transmission_gtk
         vlc
@@ -247,6 +274,7 @@ with pkgs;
         gnome3.file-roller
         gnome3.gnome-disk-utility
         gnome3.nautilus
+        gnome3.totem
         shotwell
 
         ];
@@ -264,5 +292,4 @@ with pkgs;
   };
 
   system.stateVersion = "18.03";
-
 }

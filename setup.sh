@@ -26,6 +26,7 @@ ln -sfv $DIR/nixpkgs/config.nix ~/.config/nixpkgs/config.nix
 ln -sfv $DIR/nixpkgs/overlays   ~/.config/nixpkgs/overlays
 ln -sfv $DIR/nvim/ginit.vim     ~/.config/nvim/ginit.vim
 ln -sfv $DIR/nvim/init.vim      ~/.config/nvim/init.vim
+ln -sfv $DIR/ranger             ~/.config/ranger
 ln -sfv $DIR/termite/config     ~/.config/termite/config
 ln -sfv $DIR/xmonad/xmonad.hs   ~/.xmonad/xmonad.hs
 

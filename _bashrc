@@ -30,7 +30,10 @@ alias nbl='nix-build -I nixpkgs=/nix/nixpkgs'
 alias ssh='TERM=xterm ssh'
 
 # limit ghci memory usage to prevent freezing
-alias ghci='ghci +RTS -M500m -K500m -RTS'
+alias ghci='ghci +RTS -M1000m -K1000m -RTS'
+
+# commonly typos
+alias tmxu='tmux'
 
 #
 # VAR envs for interactive loging shell
@@ -38,6 +41,10 @@ alias ghci='ghci +RTS -M500m -K500m -RTS'
 
 # nvim as default editor
 export EDITOR=nvim
+
+# colourize grep matched
+export GREP_COLOR='1;32'
+alias grep='grep --color=auto'
 
 # magic-space (!!)/(!-n) expand using spacebar
 # ex: $ ls
@@ -50,6 +57,9 @@ export HISTCONTROL=ignoreboth:erasedups
 #
 # Exports envs for every programs
 #
+
+# ranger ignore default rc
+export RANGER_LOAD_DEFAULT_RC=FALSE
 
 # timezone
 export TZ='Asia/Bangkok'
@@ -67,3 +77,9 @@ export XDG_DATA_HOME="$HOME/.local/share"
 
 # suppress GTK accessibility warning
 export NO_AT_BRIDGE=1
+
+# export ghc configuration if shell have ghc
+if type >/dev/null 2>&1 -p ghc; then
+  # type -p ghc
+  eval "$(egrep ^export "$(type -p ghc)")"
+fi

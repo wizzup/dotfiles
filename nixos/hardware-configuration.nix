@@ -8,23 +8,35 @@
     [ <nixpkgs/nixos/modules/installer/scan/not-detected.nix>
     ];
 
-  # wait for hdd to be ready
-  boot.initrd.postDeviceCommands = "sleep 1s";
+  boot = {
+    extraModprobeConfig = "options nvidia-drm modeset=1";
 
-  boot.initrd.availableKernelModules = [
-    "ohci_pci" "ehci_pci" "pata_amd" "sata_nv" "usb_storage" "usbhid" "sd_mod"
-  ];
+    initrd = {
+      # wait for hdd to be ready
+      postDeviceCommands = "sleep 1s";
 
-  boot.kernelModules = [ "kvm-amd" ];
+      kernelModules = [
+        "nvidia"
+      ];
 
-  boot.loader.grub = {
-    enable = true;
-    version = 2;
-    device = "/dev/disk/by-uuid/eaf30e64-0a90-447f-b53d-1598fe46a8a9";
+      availableKernelModules = [
+        "ohci_pci" "ehci_pci" "pata_amd" "sata_nv" "usb_storage" "usbhid" "sd_mod"
+      ];
+    };
+
+    kernelModules = [ "kvm-amd" ];
+
+    kernelParams = [ "quiet" ];
+
+    loader.grub = {
+      enable = true;
+      version = 2;
+      device = "/dev/disk/by-uuid/eaf30e64-0a90-447f-b53d-1598fe46a8a9";
+    };
+
+    # clear /tmp on every boot
+    cleanTmpDir = true;
   };
-
-  # clear /tmp on every boot
-  boot.cleanTmpDir = true;
 
   fileSystems."/" =
     { device = "/dev/disk/by-uuid/eaf30e64-0a90-447f-b53d-1598fe46a8a9";
@@ -49,6 +61,10 @@
       fsType = "btrfs";
       options = [ "subvol=@data" ];
     };
+
+  swapDevices = [
+      { device = "/dev/disk/by-uuid/d73d2b09-0981-4a48-8199-ed956a51bc57"; }
+    ];
 
   powerManagement.cpuFreqGovernor = "ondemand";
 }
