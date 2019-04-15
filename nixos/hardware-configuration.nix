@@ -9,24 +9,27 @@
     ];
 
   boot = {
-    extraModprobeConfig = "options nvidia-drm modeset=1";
-
     initrd = {
       # wait for hdd to be ready
       postDeviceCommands = "sleep 1s";
 
       kernelModules = [
-        "nvidia"
+        "nouveau"
       ];
 
       availableKernelModules = [
         "ohci_pci" "ehci_pci" "pata_amd" "sata_nv" "usb_storage" "usbhid" "sd_mod"
+
+        # https://nouveau.freedesktop.org/wiki/InstallNouveau/
+        "drm" "drm_kms_helper" "ttm" "nouveau"
       ];
     };
 
     kernelModules = [ "kvm-amd" ];
 
-    kernelParams = [ "quiet" ];
+    blacklistedKernelModules = [ "nvidia" ];
+
+    # kernelParams = [ "quiet" ];
 
     loader.grub = {
       enable = true;

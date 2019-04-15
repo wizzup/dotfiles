@@ -31,7 +31,7 @@ with pkgs;
   nix = {
     maxJobs = 2;
 
-    # useSandbox = true;
+    useSandbox = true;
 
     # default level is 0, valid values are 0 to 19
     daemonNiceLevel = 10;
@@ -75,6 +75,7 @@ with pkgs;
   programs = {
     bash.enableCompletion = true;
     command-not-found.enable = true;
+    sway.enable = true;
   };
 
   ##  fonts
@@ -94,40 +95,40 @@ with pkgs;
 
   environment.systemPackages = [
 
-    ## xmonad utils
-    # taffybar
-    alacritty
+    ## common utils
     alsaUtils
     dmenu
     dunst
     dzen2
     feh
     gmrun
-    lm_sensors
-    pasystray
     pavucontrol
+    xdg_utils
+
+    ## terminals
+    alacritty
+    kitty
     rxvt_unicode-with-plugins
     termite
-    trayer
     xterm
 
-    ## haskell packages
-    haskellPackages.xmobar
-
-    # openbox utils
-    obconf
-    tint2
+    # sway utils
+    grim
+    i3blocks
+    i3status
+    slurp
 
     # icons
     arc-icon-theme
-    hicolor_icon_theme
     gnome2.gnome_icon_theme
     gnome3.adwaita-icon-theme
+    hicolor_icon_theme
 
     # system utils
     btrfs-progs
     file
     inotify-tools
+    lm_sensors
     parted
     psmisc
     tree
@@ -135,26 +136,7 @@ with pkgs;
   ];
 
   services = {
-    # ipfs.enable = true;
-
-    # openssh = {
-    #   enable = true;
-    #   permitRootLogin = "yes";
-    # };
-
-    # avahi = {
-    #   enable = true;
-    #   nssmdns = true;
-    # };
-
-    # printing = {
-    #   enable = true;
-    #   # drivers = [ samsung-unified-linux-driver ];
-    # };
-
     dbus.packages = [ gnome3.dconf ];
-
-    # udisks2.enable = true;
 
     gnome3 = {
       sushi.enable = true;
@@ -166,12 +148,13 @@ with pkgs;
       SystemMaxUse=50M
       MaxRetentionSec=10day
       '';
-
   };
 
   zramSwap.enable = true;
 
   hardware = {
+    enableAllFirmware = true;
+
     # sound via PulseAudio
     pulseaudio = {
       enable = true;
@@ -188,47 +171,12 @@ with pkgs;
     };
   };
 
-  services.xserver = {
-    enable = true;
-    layout = "us, th";
-    xkbOptions = "grp:lalt_lshift_toggle, caps:swapescape";
-
-    videoDrivers = [ "nvidiaLegacy340" ];
-    # videoDrivers = [ "nouveau" ];
-
-    windowManager.openbox.enable = true;
-
-    windowManager.xmonad = {
-      enable = true;
-      enableContribAndExtras = true;
-      extraPackages = (p: with p; [
-        # taffybar
-      ]);
-    };
-
-    windowManager.default = "xmonad";
-
-    displayManager.sddm = {
-      enable = true;
-      autoNumlock = true;
-    };
-    };
-
-  # virtualisation = {
-  #   docker = {
-  #     enable = true;
-  #     storageDriver = "btrfs";
-  #   };
-  #
-  #   virtualbox.host.enable = true;
-  # };
-
   users.extraUsers = {
     wizzup = {
       isNormalUser = true;
       home = "/home/wizzup";
       description = "wizzup";
-      extraGroups = ["audio" "wheel" "docker" "vboxusers"];
+      extraGroups = ["audio" "wheel" "docker" "vboxusers" "sway"];
       packages = [
         ## terminal apps
         git
@@ -244,6 +192,7 @@ with pkgs;
         xsel
         haskellPackages.steeloverseer
         nodePackages.livedown
+        entr
 
         ## TODO: move to custom nvim override
         ## need for nvim's coc
@@ -256,9 +205,10 @@ with pkgs;
         w3m
 
         ## graphical apps
-        # neovim-qt
+        neovim-qt
         chromium
         firefox
+        firefox-wayland
         gnucash
         keepassx2
         libreoffice
