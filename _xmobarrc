@@ -29,8 +29,9 @@ Config { font = "xft:DejaVu Sans Mono:pixelsize=14"
                     , Run StdinReader
                     , Run Com "bash" [".sensors.sh", "--cpu"] "cputemp" 10
                     , Run Com "nvidia-smi" ["--query-gpu=temperature.gpu", "--format=csv,noheader,nounits"] "gpucoretemp" 10
+                    , Run Com "xkb-switch" [] "kblayout" 10
                     ]
        , sepChar = "%"
        , alignSep = "}{"
-       , template = "%StdinReader%}{| %multicpu% %cputemp% | G.%gpucoretemp%C | %swap% %memory% | %enp0s7% | <fc=#ee9a00>%date%</fc>| %uname%"
+       , template = "%StdinReader%}{| %kblayout% | %multicpu% %cputemp% | G.%gpucoretemp%C | %swap% %memory% | %enp0s7% | <fc=#ee9a00>%date%</fc>| %uname%"
        }

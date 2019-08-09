@@ -9,6 +9,15 @@ let
     rev = "42a564ad65808b60d091a8e7e1b8c4de12cf9b2b";
     sha256 = "0xs7kpv40lzd1bb734biy0mln21mbzly5frw48hw07amil5wm5j1";
   }) {};
+
+  # https://github.com/moretea/yarn2nix
+  yarn2nix = callPackage (fetchFromGitHub {
+    owner = "moretea";
+    repo = "yarn2nix";
+    rev = "master";
+    sha256 = "0h2kzdfiw43rbiiffpqq9lkhvdv8mgzz2w29pzrxgv8d39x67vr9";
+  }) {};
+
 in
 {
   # for building an unfree package with nix-shell, nix-build and nix-env
@@ -38,10 +47,22 @@ in
 
       # binaries that need rebuild for RTS options support
       steeloverseer = super.haskell.lib.appendConfigureFlag
-            super.haskellPackages.steeloverseer "--ghc-option=-rtsopts";
+       super.haskellPackages.steeloverseer "--ghc-option=-rtsopts";
 
       doctest = super.haskell.lib.appendConfigureFlag
-            super.haskellPackages.doctest "--ghc-option=-rtsopts";
+        super.haskellPackages.doctest "--ghc-option=-rtsopts";
+
+      # diagrams = pkgs.haskell.lib.overrideCabal diagrams (drv: {
+      #   configureFlags = [ "-f cairo" ];
+      #   libraryHaskellDepends = with haskellPackages; [
+      #     diagrams-cairo
+      #   ] ++ drv.libraryHaskellDepends;
+      # });
+      #
+      # diagrams = pkgs.haskell.lib.addBuildDepends drv
+      #   (with haskellPackages; [
+      #     diagrams-cairo
+      #   ]);
     };
 
     # for codingame shell (ghc844)
@@ -88,32 +109,48 @@ in
       ];
     };
 
+    all-hies = callPackage (fetchFromGitHub {
+      owner = "infinisil";
+      repo = "all-hies";
+      rev = "master";
+      sha256 = "1pmrmc0y94434z3znk69wpi8lgfblci4a1py9k0ri9fifsqkb7sn";
+    }) {};
+
+    hie = all-hies.selection { selector = p: { inherit (p) ghc865; }; };
+
     ## common haskell packages for using with nvim
     myHaskellEnv = buildEnv {
       name = "myHaskellEnv";
       paths = with haskellPackages; [
         ## FIXME: this doesn't seem to work, ghc won't find any of these libs
-        # (ghcWithPackages (p: with p;
-        #   [
-        #     split
-        #   ]
-        # ))
+        (ghcWithPackages (p: with p;
+          [
+            split
+          ]
+        ))
 
         ## supported tools
         hasktags ctags
         stack cabal-install
         doctest
+        hoogle
         hie
+        hlint
 
         ## need for readline's bind
         bashInteractive
       ];
     };
 
-    hie =
-      if pkgs.lib.hasPrefix ghc.version "ghc80" then hie-nix.hie80 else
-      if pkgs.lib.hasPrefix ghc.version "ghc82" then hie-nix.hie82 else
-      if pkgs.lib.hasPrefix ghc.version "ghc84" then hie-nix.hie84 else
-                                                     hie-nix.hie86;
+    # yarn2nix binary
+    yarn2nix = yarn2nix.yarn2nix;
+    mkYarnPackage = null;
+
+    ## suckless terminal
+    ## TODO: use st.patches
+    ##       move to /etc/nixos/configuration.nix
+    # st = super.st.override {
+    #   conf = builtins.readFile ./st/config.h;
+    # };
   };
 }

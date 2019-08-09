@@ -36,6 +36,9 @@
 -- Make the prompt a little more colorful.
 :set prompt "\ESC[1;34m\STX%s\n\ESC[0;34m\STXλ> \ESC[m\STX"
 
+-- annoying :r/:R
+:def R \_ -> pure ":r"
+
 -- Hoogle integration -- doesn't work on data61 fp-course
 -- :def hoogle \x -> return $ ":!hoogle \"" ++ x ++ "\""
 -- :def doc \x -> return $ ":!hoogle --info \"" ++ x ++ "\""

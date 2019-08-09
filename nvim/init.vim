@@ -31,6 +31,10 @@ call plug#begin()
     " --------------------------------------------------------------------------
     Plug 'morhetz/gruvbox'
 
+    "" dynamic highlight
+    " --------------------------------------------------------------------------
+    Plug 'junegunn/limelight.vim'
+
     "" fuzzy finder
     " --------------------------------------------------------------------------
     Plug 'ctrlpvim/ctrlp.vim'
@@ -110,7 +114,7 @@ let g:airline#extensions#ale#enabled = 1
 " ale
 " -----------------------------------------------------------------------------
 let g:ale_cursor_detail = 1
-let g:ale_linters = {'haskell': ['ghc', 'hlint', 'ghc-mod' ]}
+let g:ale_linters = {'haskell': ['hie']}
 let g:ale_haskell_ghc_options = '-fno-code -v0 -Wall -Wcompat'
 
 " nerdtree
@@ -146,7 +150,7 @@ call deoplete#custom#option({
 " use ale for diagnostic, LanguageClient is buggy
 let g:LanguageClient_diagnosticsEnable = 0
 let g:LanguageClient_serverCommands = {
-    \ 'haskell': ['hie-wrapper', '--lsp'],
+    \ 'haskell': ['hie', '--lsp'],
     \ 'python': ['pyls'],
 \ }
 set completefunc=LanguageClient#complete
@@ -237,6 +241,9 @@ set nowrapscan      " don't automatic to to beginning of file
 " clear search lighlight
 nmap <Leader><Space> :noh<CR>
 
+" quick save
+nmap <Leader>w :w<CR>
+
 " I don't want to clean backup file so don't create it.
 set nobackup
 set nowritebackup
@@ -259,13 +266,8 @@ colorscheme gruvbox
 augroup myAuFiletype
     autocmd!
 
-    " haskell
-    "
-    " autocmd BufWinEnter *.hs setlocal foldexpr=SimpylFold(v:lnum) foldmethod=expr
-    " autocmd BufWinLeave *.hs setlocal foldexpr< foldmethod<
+    "" python
 
-    " python
-    "
     " autocmd FileType python nmap <buffer> <Leader>w :w<CR>:Neomake<CR>
     " autocmd FileType python nmap <buffer> <Leader>r :w<CR>:!python %<CR>
     " autocmd FileType python nmap <buffer> <Leader>ri :w<CR>:!python % < input<CR>
@@ -275,14 +277,19 @@ augroup myAuFiletype
     " autocmd FileType python  setlocal textwidth=78
     " autocmd FileType text    setlocal textwidth=78
 
-    " haskel source file
+    "" haskell
     " write buffer and run doctest
-    autocmd FileType haskell nmap <buffer> <Leader>dt :w<CR>:!doctest %<CR>
+
+    " autocmd FileType haskell nmap <buffer> <Leader>dt :w<CR>:!doctest %<CR>
+
     " write and run
     " autocmd FileType haskell nmap <buffer> <Leader>r :w<CR>:!runhaskell %<CR>
     " autocmd FileType haskell nmap <buffer> <Leader>ri :w<CR>:!runhaskell % < input<CR>
     " autocmd FileType haskell nmap <buffer> <Leader>r :w<CR>:!stack exec runhaskell %<CR>
     " autocmd FileType haskell nmap <buffer> <Leader>ri :w<CR>:!stack exec runhaskell % < input<CR>
+    "
+    " autocmd BufWinEnter *.hs setlocal foldexpr=SimpylFold(v:lnum) foldmethod=expr
+    " autocmd BufWinLeave *.hs setlocal foldexpr< foldmethod<
 
 augroup END
 
@@ -314,6 +321,12 @@ endif
 "" remove all trailing whitespace
 function! StripTrailingWhitespace()
     %s/\s\+$//e
+endfunction
+
+"" calculate text hash and replace the old one
+function! HashBuffer()
+  let md5=trim(system('md5sum ' . expand('%') . ' | cut "-d " -f1'))
+  %s/%%%\<HASH.*%%%/\='%%%' . 'HASH-' . md5 . '%%%'/
 endfunction
 
 "" zoom/unzoom toggle

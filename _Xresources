@@ -72,10 +72,10 @@ URxvt.depth:  32
 URxvt.fading: 30
 
 ! Fonts
-URxvt.font: fonts
-URxvt.boldFont: fontsB
-URxvt.italicFont: fontsI
-URxvt.boldItalicFont: fonts
+*.font: fonts
+*.boldFont: fontsB
+*.italicFont: fontsI
+*.boldItalicFont: fonts
 URxvt.letterSpace: 0
 
 ! Scrollbar

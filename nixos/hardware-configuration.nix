@@ -9,51 +9,28 @@
     ];
 
   boot = {
-    extraModprobeConfig = "options nvidia-drm modeset=1";
-
     initrd = {
-      # wait for hdd to be ready
-      postDeviceCommands = "sleep 1s";
-
-      kernelModules = [
-        "nvidia"
-      ];
-
       availableKernelModules = [
         "ohci_pci" "ehci_pci" "pata_amd" "sata_nv" "usb_storage" "usbhid" "sd_mod"
+        # "nvidia"
+      ];
+      kernelModules = [
+        # "nvidia"
       ];
     };
 
+    # extraModprobeConfig = "options nvidia-drm modeset=1";
     kernelModules = [ "kvm-amd" ];
-
-    kernelParams = [ "quiet" ];
-
-    loader.grub = {
-      enable = true;
-      version = 2;
-      device = "/dev/disk/by-uuid/eaf30e64-0a90-447f-b53d-1598fe46a8a9";
-    };
-
-    # clear /tmp on every boot
-    cleanTmpDir = true;
   };
 
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/eaf30e64-0a90-447f-b53d-1598fe46a8a9";
-      fsType = "btrfs";
-      options = [ "subvol=@nixos" ];
+    { device = "/dev/disk/by-uuid/a2850c65-e8ff-426e-9879-726bb224603c";
+      fsType = "ext4";
     };
 
-  fileSystems."/home" =
-    { device = "/dev/disk/by-uuid/eaf30e64-0a90-447f-b53d-1598fe46a8a9";
-      fsType = "btrfs";
-      options = [ "subvol=@home" ];
-    };
-
-  fileSystems."/tmp" =
-    { device = "/dev/disk/by-uuid/eaf30e64-0a90-447f-b53d-1598fe46a8a9";
-      fsType = "btrfs";
-      options = [ "subvol=@tmp" ];
+  fileSystems."/boot" =
+    { device = "/dev/disk/by-uuid/941fa838-9e0a-4f43-a772-7cb8d651fada";
+      fsType = "ext4";
     };
 
   fileSystems."/data" =
@@ -62,9 +39,15 @@
       options = [ "subvol=@data" ];
     };
 
+  fileSystems."/home" =
+    { device = "/dev/disk/by-uuid/eaf30e64-0a90-447f-b53d-1598fe46a8a9";
+      fsType = "btrfs";
+      options = [ "subvol=@home" ];
+    };
+
   swapDevices = [
-      { device = "/dev/disk/by-uuid/d73d2b09-0981-4a48-8199-ed956a51bc57"; }
+    { device = "/dev/disk/by-uuid/05aecd11-7a37-4a6b-bafd-2500e7c62a13"; }
     ];
 
-  powerManagement.cpuFreqGovernor = "ondemand";
+  nix.maxJobs = lib.mkDefault 2;
 }

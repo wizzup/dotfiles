@@ -65,9 +65,9 @@ export RANGER_LOAD_DEFAULT_RC=FALSE
 export TZ='Asia/Bangkok'
 
 # git prompt
-# GIT_PROMPT_SH=/run/current-system/sw/etc/bash_completion.d/git-prompt.sh
-GIT_PROMPT_SH=/etc/profiles/per-user/wizzup/etc/bash_completion.d/git-prompt.sh
-[ -f $GIT_PROMPT_SH ]; source $GIT_PROMPT_SH && unset GIT_PROMPT_SH
+GIT_PROMPT_SH=/run/current-system/sw/etc/bash_completion.d/git-prompt.sh
+#GIT_PROMPT_SH=/etc/profiles/per-user/wizzup/etc/bash_completion.d/git-prompt.sh
+[[ -f $GIT_PROMPT_SH ]] && source $GIT_PROMPT_SH && unset GIT_PROMPT_SH
 export PS1='[\u@ \W]$(__git_ps1 "(%s)")$ '
 
 # XDG
@@ -83,3 +83,13 @@ if type >/dev/null 2>&1 -p ghc; then
   # type -p ghc
   eval "$(egrep ^export "$(type -p ghc)")"
 fi
+
+# beep via speaker
+function _beep {
+  (speaker-test --frequency $1 --test sine >/dev/null)&
+  _pid=$!
+  sleep 0.${2}s
+  kill -9 $_pid
+}
+
+alias beep='_beep 400 200'

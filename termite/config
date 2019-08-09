@@ -20,9 +20,7 @@ dynamic_title = true
 
 clickable_url = true
 
-font = DejaVu Sans Mono 14px
-# font = Hack 14px
-# font = Monospace 14px
+font = Source Code Pro 16px
 
 scrollback_lines = 10000
 search_wrap = true

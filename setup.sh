@@ -1,13 +1,18 @@
 #!/usr/bin/env bash
 # create symlinks of configuration files
 
+set -e
+
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 echo $DIR
 
+[[ -e $XDG_CONFIG_HOME ]] || echo "XDG_CONFIG_HOME is not defined"
+
 echo 'creating configuration directories'
-mkdir -pv ~/.config/nvim
-mkdir -pv ~/.config/termite
-mkdir -pv ~/.config/nixpkgs
+mkdir -pv $XDG_CONFIG_HOME/nvim
+mkdir -pv $XDG_CONFIG_HOME/nvim/after
+mkdir -pv $XDG_CONFIG_HOME/termite
+mkdir -pv $XDG_CONFIG_HOME/nixpkgs
 mkdir -pv ~/.xmonad
 
 echo 'installing symlinks'
@@ -22,12 +27,11 @@ ln -sfv $DIR/_tmux.conf         ~/.tmux.conf
 ln -sfv $DIR/_xmobarrc          ~/.xmobarrc
 ln -sfv $DIR/_xprofile          ~/.xprofile
 ln -sfv $DIR/_Xresources        ~/.Xresources
-ln -sfv $DIR/nixpkgs/config.nix ~/.config/nixpkgs/config.nix
-ln -sfv $DIR/nixpkgs/overlays   ~/.config/nixpkgs/overlays
-ln -sfv $DIR/nvim/ginit.vim     ~/.config/nvim/ginit.vim
-ln -sfv $DIR/nvim/init.vim      ~/.config/nvim/init.vim
-ln -sfv $DIR/ranger             ~/.config/ranger
-ln -sfv $DIR/termite/config     ~/.config/termite/config
+ln -sfv $DIR/nixpkgs/config.nix $XDG_CONFIG_HOME/nixpkgs/config.nix
+ln -sfv $DIR/nixpkgs/overlays   $XDG_CONFIG_HOME/nixpkgs/overlays
+ln -sfv $DIR/nvim/ginit.vim     $XDG_CONFIG_HOME/nvim/ginit.vim
+ln -sfv $DIR/nvim/init.vim      $XDG_CONFIG_HOME/nvim/init.vim
+ln -sfv $DIR/termite/config     $XDG_CONFIG_HOME/termite/config
 ln -sfv $DIR/xmonad/xmonad.hs   ~/.xmonad/xmonad.hs
 
 echo 'installing nvim vim-plug (autoload)'
