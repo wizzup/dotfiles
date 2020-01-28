@@ -22,7 +22,6 @@ myTerminal :: String
 -- myTerminal = "urxvt"
 -- myTerminal = "termite"
 myTerminal = "termite"
->>>>>>> c4a58ba... black-screen problem, using nouveau (temporary) and updates dotfiles
 
 -- Width of the window border in pixels.
 --

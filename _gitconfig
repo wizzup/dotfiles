@@ -25,4 +25,4 @@
   cmd = nvim -R -d $LOCAL $REMOTE
 
 [difftool]
-	prompt = false
+  prompt = true

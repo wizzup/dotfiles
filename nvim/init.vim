@@ -83,6 +83,9 @@ call plug#begin()
     " --------------------------------------------------------------------------
     " Plug 'sebastianmarkow/deoplete-rust', { 'for': 'rust' }
 
+    "" ghcid
+    Plug 'ndmitchell/ghcid', { 'rtp': 'plugins/nvim' }
+
 call plug#end()
 " ==============================================================================
 
@@ -113,9 +116,11 @@ let g:airline#extensions#ale#enabled = 1
 
 " ale
 " -----------------------------------------------------------------------------
-let g:ale_cursor_detail = 1
-let g:ale_linters = {'haskell': ['hie']}
-let g:ale_haskell_ghc_options = '-fno-code -v0 -Wall -Wcompat'
+" let g:ale_cursor_detail = 1
+" let g:ale_linters = {'haskell': ['hlint']}
+let g:ale_linters = {'haskell': ['cabal_ghc']}
+" let g:ale_linters = {'haskell': ['ghc']}
+" let g:ale_haskell_ghc_options = '-fno-code -v0 -Wall -Wcompat'
 
 " nerdtree
 " -----------------------------------------------------------------------------
@@ -152,6 +157,7 @@ let g:LanguageClient_diagnosticsEnable = 0
 let g:LanguageClient_serverCommands = {
     \ 'haskell': ['hie', '--lsp'],
     \ 'python': ['pyls'],
+    \ 'rust': ['rls'],
 \ }
 set completefunc=LanguageClient#complete
 set formatexpr=LanguageClient#textDocument_rangeFormatting_sync()

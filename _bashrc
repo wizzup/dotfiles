@@ -17,23 +17,86 @@ alias lx='find . -maxdepth 1 -type f -executable'
 alias lh='ls -al | grep " \."'
 
 ## youtube download add queue entry to YTTODO file
-alias yttd='echo youtube-dl -f "\"bestvideo[height<=?720]+bestaudio/best"\" -o "\"%(uploader)s-%(title)s-%(id)s.%(ext)s"\" $@ >> YTTODO'
+function yttd {
+  [[ ! -e YTTODO ]] && \
+    printf "#! /usr/bin/env nix-shell\n#! nix-shell -i bash -p youtube-dl\n" \
+    >> YTTODO
+  echo youtube-dl -f "\"bestvideo[height<=?720,ext=mp4]+bestaudio[ext=m4a]"\" \
+                  -o "\"%(uploader).10s-%(title).50s-%(id)s.%(ext)s"\"  \
+                  "$@" >> YTTODO
+  chmod +x YTTODO
+}
 
 ## use nixpkgs form git
 alias nsg='nix-shell -I nixpkgs="https://github.com/NixOS/nixpkgs/archive/master.tar.gz"'
 alias nbg='nix-build -I nixpkgs="https://github.com/NixOS/nixpkgs/archive/master.tar.gz"'
-## use nixpkgs form local repo
-alias nsl='nix-shell -I nixpkgs=/nix/nixpkgs'
-alias nbl='nix-build -I nixpkgs=/nix/nixpkgs'
+
+# nix-shell with presets
+alias nshs='nix-shell -p myHaskellEnv'
+alias nspy='nix-shell -p myPythonEnv'
 
 # ssh term is xterm
 alias ssh='TERM=xterm ssh'
 
+# manually export ghc configuration if shell have ghc
+function ghc_exports {
+  local GHC_BIN
+  GHC_BIN=$(command -v ghc)
+  if [[ -z $GHC_BIN ]]; then
+    echo "No ghc avaliable"
+    return 1
+  fi
+
+  local EXPRS
+  EXPRS=$(grep -E ^export "$GHC_BIN")
+  echo "$EXPRS"
+  eval "$EXPRS"
+}
+
+# auto export ghc configuration if shell have ghc (only with new bash instance)
+if [[ -n $(command -v ghc) ]]; then
+  # command -v ghc
+  eval "$(grep -E ^export "$(type -p ghc)")"
+fi
+
 # limit ghci memory usage to prevent freezing
-alias ghci='ghci +RTS -M1000m -K1000m -RTS'
+# alias ghci='ghci +RTS -M1000m -K1000m -RTS'
+
+# # limit haskell binary memory consumption
+# export GHCRTS='-M1G'
 
 # commonly typos
 alias tmxu='tmux'
+
+# sos for python
+function sospy {
+  echo "watching $1"
+  sos -p "$1" -c "clear && python $1"
+}
+# with input
+function sospyi {
+  echo "watching $1 with input $2"
+  sos -p "$1" -c "clear && python $1 < $2"
+}
+
+# sos for haskell
+function soshs {
+  echo "watching $1"
+  sos -p "$1" -c "clear && runhaskell $1"
+}
+# with input
+function soshsi {
+  echo "watching $1 with input $2"
+  sos -p "$1" -c "clear && runhaskell $1 < $2"
+}
+
+# tail -f with no line wraping
+function tail_nw {
+  echo "watching $1"
+  setterm -linewrap off
+  tail -f "$1"
+  setterm -linewrap on
+}
 
 #
 # VAR envs for interactive loging shell
@@ -57,6 +120,7 @@ export HISTCONTROL=ignoreboth:erasedups
 #
 # Exports envs for every programs
 #
+export TERM=screen-256color
 
 # ranger ignore default rc
 export RANGER_LOAD_DEFAULT_RC=FALSE
@@ -77,12 +141,6 @@ export XDG_DATA_HOME="$HOME/.local/share"
 
 # suppress GTK accessibility warning
 export NO_AT_BRIDGE=1
-
-# export ghc configuration if shell have ghc
-if type >/dev/null 2>&1 -p ghc; then
-  # type -p ghc
-  eval "$(egrep ^export "$(type -p ghc)")"
-fi
 
 # beep via speaker
 function _beep {

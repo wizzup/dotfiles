@@ -12,15 +12,20 @@
     initrd = {
       availableKernelModules = [
         "ohci_pci" "ehci_pci" "pata_amd" "sata_nv" "usb_storage" "usbhid" "sd_mod"
-        # "nvidia"
       ];
+
       kernelModules = [
-        # "nvidia"
+        "nouveau"
       ];
     };
 
     # extraModprobeConfig = "options nvidia-drm modeset=1";
-    kernelModules = [ "kvm-amd" ];
+
+    kernelModules = [
+      "kvm-amd"
+      "nouveau"
+      # "nvidia"
+    ];
   };
 
   fileSystems."/" =
