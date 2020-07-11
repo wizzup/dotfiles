@@ -22,7 +22,7 @@ function yttd {
     printf "#! /usr/bin/env nix-shell\n#! nix-shell -i bash -p youtube-dl\n" \
     >> YTTODO
   echo youtube-dl -f "\"bestvideo[height<=?720,ext=mp4]+bestaudio[ext=m4a]"\" \
-                  -o "\"%(uploader).10s-%(title).50s-%(id)s.%(ext)s"\"  \
+                  -o "\"%(uploader).10s-%(title).60s-%(id)s.%(ext)s"\"  \
                   "$@" >> YTTODO
   chmod +x YTTODO
 }
@@ -120,7 +120,8 @@ export HISTCONTROL=ignoreboth:erasedups
 #
 # Exports envs for every programs
 #
-export TERM=screen-256color
+# export TERM=screen-256color
+export TERM=xterm-256color
 
 # ranger ignore default rc
 export RANGER_LOAD_DEFAULT_RC=FALSE

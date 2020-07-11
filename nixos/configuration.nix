@@ -11,14 +11,6 @@ with pkgs;
       ./hardware-configuration.nix
     ];
 
-  boot.loader.grub = {
-        enable = true;
-        version = 2;
-        device = "/dev/disk/by-id/wwn-0x50014ee1002d4ea2";
-
-        # memtest86.enable = true;
-  };
-
   networking = {
     useDHCP = false;
     enableIPv6 = false;
@@ -72,8 +64,8 @@ with pkgs;
 
     trustedUsers = [ "root" "wizzup" ];
 
-    gc.automatic = true;
-    gc.options = "--delete-older-than 30d";
+    # gc.automatic = true;
+    # gc.options = "--delete-older-than 30d";
   };
 
   nixpkgs = {
@@ -84,26 +76,27 @@ with pkgs;
 
     overlays = [
       # (import /data/works/dotfiles/nixpkgs/overlays/neovim.nix)
-      (import /data/works/dotfiles/nixpkgs/overlays/st.nix)
+      # (import /data/works/dotfiles/nixpkgs/overlays/st.nix)
       (import /data/works/dotfiles/nixpkgs/overlays/ranger.nix)
     ];
   };
 
-  virtualisation = {
-    # anbox.enable = true;
-
-    # docker.enable = true;
-    # docker.autoPrune.enable = true;
-
-    # libvirtd.enable = true;
-
-    # virtualbox.host.enable = true;
-    # virtualbox.host.enableExtensionPack = true;
-  };
+  # virtualisation = {
+  #   anbox.enable = true;
+  #
+  #   docker.enable = true;
+  #   docker.autoPrune.enable = true;
+  #
+  #   libvirtd.enable = true;
+  #
+  #   virtualbox.host.enable = true;
+  #   virtualbox.host.enableExtensionPack = true;
+  # };
 
 
   ## documentations
-  documentation.dev.enable = true;
+  documentation.enable = false;
+  # documentation.dev.enable = true;
 
   ##  fonts
   fonts = {
@@ -130,23 +123,33 @@ with pkgs;
   };
 
   environment.systemPackages = with pkgs; [
+    # alacritty
+    # cabal-install
+    # cabal2nix
+    # cachix
+    # entr
+    # haskellPackages.steeloverseer
+    # kakoune
+    # kitty
     # libreoffice-fresh
+    # nodePackages.live-server
+    # nodePackages.livedown
+    # nodejs
+    # rxvt_unicode-with-plugins
     # shared_mime_info
     # shotwell
+    # stack
     # stack2nix
     # taffybar
-    alacritty
+    # vagrant
+    # yarn
     alsaUtils
     arc-icon-theme
     btrfs-progs
-    cabal-install
-    cabal2nix
-    cachix
     chromium
     dmenu
     dunst
     dzen2
-    entr
     feh
     ffmpegthumbnailer
     file
@@ -166,35 +169,28 @@ with pkgs;
     gnome3.totem
     gnucash
     gnumake
-    haskellPackages.steeloverseer
     hicolor_icon_theme
     htop
     inotify-tools
-    kakoune
     keepassx2
-    kitty
     libreoffice
     lm_sensors
+    # man
     neovim
-    nodePackages.live-server
-    nodePackages.livedown
-    nodejs
     obconf
-    p7zip
+    # p7zip
     parted
     pasystray
     pavucontrol
     poppler_utils
     psmisc
     ranger
-    rxvt_unicode-with-plugins
     scrot
     shared_mime_info
     shellcheck
     shotwell
     sshfs
-    st
-    stack
+    # st
     termite
     tint2
     tmux
@@ -205,7 +201,6 @@ with pkgs;
     unzip
     usbutils
     vlc
-    vagrant
     w3m
     wget
     xdg_utils
@@ -213,10 +208,9 @@ with pkgs;
     xmobar
     xsel
     xterm
-    yarn
   ];
 
-  zramSwap.enable = true;
+  # zramSwap.enable = true;
 
   # Enable sound.
   sound.enable = true;
@@ -234,12 +228,6 @@ with pkgs;
       package = pulseaudioFull;
     };
 
-    # nvidia.modesetting.enable = true;
-
-    opengl = {
-      enable = true;
-      driSupport32Bit = true;
-    };
   };
 
   services = {
@@ -258,7 +246,6 @@ with pkgs;
       layout = "us,th";
       xkbOptions = "grp:lalt_lshift_toggle,caps:swapescape";
 
-      # videoDrivers = [ "nvidiaLegacy340" ];
       videoDrivers = [ "nouveau" ];
 
       windowManager.openbox.enable = true;
@@ -282,13 +269,22 @@ with pkgs;
   };
 
   users.users = {
-    john = {
+    alice = {
       isNormalUser = true;
     };
 
-    jane = {
+    bob = {
       isNormalUser = true;
     };
+
+  #   game = {
+  #     isNormalUser = true;
+  #     home = "/home/game";
+  #     description = "game";
+  #     packages = [
+  #       # steam
+  #     ];
+  # };
 
     wizzup = {
       isNormalUser = true;
@@ -303,18 +299,10 @@ with pkgs;
         ];
         packages = [
           ];
-        };
+    };
+
   };
 
-  #   game = {
-  #     isNormalUser = true;
-  #     home = "/home/game";
-  #     description = "game";
-  #     packages = [
-  #       # steam
-  #     ];
-  # };
-
-  system.stateVersion = "19.03";
+  # system.stateVersion = "19.03";
 
 }

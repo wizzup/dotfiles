@@ -9,6 +9,15 @@
     ];
 
   boot = {
+
+    loader.grub = {
+          enable = true;
+          version = 2;
+          device = "/dev/disk/by-id/wwn-0x50014ee1002d4ea2";
+
+          # memtest86.enable = true;
+    };
+
     initrd = {
       availableKernelModules = [
         "ohci_pci" "ehci_pci" "pata_amd" "sata_nv" "usb_storage" "usbhid" "sd_mod"
@@ -19,12 +28,9 @@
       ];
     };
 
-    # extraModprobeConfig = "options nvidia-drm modeset=1";
-
     kernelModules = [
       "kvm-amd"
       "nouveau"
-      # "nvidia"
     ];
   };
 
@@ -51,7 +57,7 @@
     };
 
   swapDevices = [
-    { device = "/dev/disk/by-uuid/05aecd11-7a37-4a6b-bafd-2500e7c62a13"; }
+    # { device = "/dev/disk/by-uuid/05aecd11-7a37-4a6b-bafd-2500e7c62a13"; }
     ];
 
   nix.maxJobs = lib.mkDefault 2;
